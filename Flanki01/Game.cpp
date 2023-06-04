@@ -274,5 +274,5 @@ void Game::start(Game _game)
 //setTexture
 //
 
-//Dlaczego wywala b³¹d przy usuwaniu Player i okna
+//Dlaczego wywala b³¹d przy delete Player i okna
 //Dlaczego ci¹gle dzia³a if z Gra1 w metodzie start
