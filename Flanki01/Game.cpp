@@ -45,6 +45,26 @@ void Game::setTexture(std::string _s, SpriteType _spriteType)
 			std::cout << "Nie zaladowano puszki \n";
 		}
 	}
+
+	else if (_spriteType == SpriteType::Can2)
+	{
+		try
+		{
+			if (this->textureCan2.loadFromFile(_s))
+			{
+				this->can2.setTexture(this->textureCan2);
+			}
+			else
+			{
+				throw(1);
+			}
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show(ex->Message);
+			std::cout << "Nie zaladowano puszki 2 \n";
+		}
+	}
 }
 
 //Variables
@@ -52,7 +72,7 @@ void Game::setTexture(std::string _s, SpriteType _spriteType)
 void Game::initializeVariables()
 {
 	this->window = nullptr;
-	this->status = Condition::Gra1;
+	this->status = Condition::Game1;
 
 	//Game logic
 	this->endGame = false;
@@ -65,7 +85,7 @@ void Game::initializeWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Game 1", sf::Style::Fullscreen);
 
-	this->window->setFramerateLimit(60);
+	this->window->setFramerateLimit(40);
 }
 
 void Game::setCan(std::string _s)
@@ -162,25 +182,23 @@ void Game::pollEvents()
 						this->is_collapsed = true;
 
 						this->setBackground("images/pusty1.png");
-						//this->status = Condition::Gra2;
+						this->status = Condition::Game2;
 					}
 
 					//ODPALAMY PICIE
-
-					//while (!game2_end)
-					//{
-
+					
 						//PIJEMY
 
 
 						//na koñcu gry game2_end = true;
-					//}
 
 				}
 			}
 			else if (this->ev.key.code == sf::Mouse::Right)
 			{
+				this->your_turn = true;
 				this->is_collapsed = false;
+				this->status = Condition::Game1;
 			}
 		}
 		}
@@ -210,11 +228,14 @@ void Game::update()
 
 	if (this->getEndGame() == false)
 	{
+		this->setBackground("images/Plansza1.png");
+
+		this->updateCan();
+		this->setCan("images/Icon.png");
+
 		this->updateMousePositions();
 
 		Player1->update(*this->window);
-
-		this->updateCan();
 	}
 
 	//End game
@@ -230,7 +251,7 @@ void Game::renderBackground(sf::RenderTarget& target)
 	target.draw(this->background);
 }
 
-void Game::renderCan(sf::RenderTarget& target)	//target is this->window
+void Game::renderCan(sf::RenderTarget& target)
 {
 	target.draw(this->can);
 }
@@ -252,14 +273,55 @@ void Game::render()
 
 
 /////////////////////////////////////Game2////////////////////////////////
+void Game::setCan2(std::string _s)
+{
+	//Sets can and checks exeption
+	this->setTexture(_s, SpriteType::Can2);
+
+	this->can2.setScale(0.2f, 0.2f);
+	this->can2.setPosition(
+		(this->window->getSize().x) * 0.1f,
+		(this->window->getSize().y) * 0.85f
+	);
+	this->can2.setOrigin(100.f, this->can2.getGlobalBounds().top + this->can2.getGlobalBounds().height - 150.f);
+}
+
+void Game::renderCan2(sf::RenderTarget& target)
+{
+	target.draw(this->can2);
+}
+
 void Game::update2()
 {
+	this->pollEvents();
 
+	if (this->getEndGame() == false)
+	{
+		this->updateMousePositions();
+
+		this->setCan2("images/Icon.png");
+
+		Player1->update(*this->window);
+
+		this->updateCan();
+	}
 }
 
 void Game::render2()
 {
+	this->window->clear(sf::Color::Black);
 
+	this->renderBackground(*this->window);
+
+	Enemy1->render(*this->window);
+
+	this->renderCan(*this->window);
+
+	this->renderCan2(*this->window);
+
+	Player1->render(*this->window);
+
+	this->window->display();
 }
 
 
@@ -267,7 +329,8 @@ void Game::start(Game _game)
 {
 	while (_game.getWindowIsOpen() && !_game.getEndGame())
 	{
-		if (this->getCondition() == Condition::Gra1)
+
+		if (this->getCondition() == Condition::Game1)
 		{
 			//Update
 			_game.update();
@@ -276,12 +339,12 @@ void Game::start(Game _game)
 			//Render
 			_game.render();
 		}
-		if (this->getCondition() == Condition::Gra2)
+		if (this->getCondition() == Condition::Game2)
 		{
-			//_game.update2();
+			_game.update2();
 
 
-			//_game.render2();
+			_game.render2();
 		}
 
 		this->status = _game.getCondition();
@@ -289,10 +352,8 @@ void Game::start(Game _game)
 }
 
 
+
 //TODO
-//enum klass - logika w g³ównej pêtli (if (typ) - gra1 lub gra2)
-//setTexture
-//
 
 //Dlaczego wywala b³¹d przy delete Player i okna
 //Dlaczego ci¹gle dzia³a if z Gra1 w metodzie start

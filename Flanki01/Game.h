@@ -2,13 +2,6 @@
 #pragma once
 #include "Contestant.h"
 
-enum class Condition {
-	Gra1, Gra2
-};
-
-enum class SpriteType {
-	Background, Can
-};
 
 class Game
 {
@@ -19,6 +12,7 @@ private:
 	sf::Event ev;
 	sf::Texture textureBackground;
 	sf::Texture textureCan;
+	sf::Texture textureCan2;
 	sf::Vector2i mousePosWindow;
 	Condition status;
 	SpriteType type;
@@ -33,6 +27,7 @@ private:
 
 	//Game objects
 	sf::Sprite can;
+	sf::Sprite can2;
 	sf::Sprite background;
 	Contestant* Enemy1;
 	Contestant* Player1;
@@ -66,14 +61,17 @@ public:
 	void updateCan();
 	void update();
 	//
-	void renderBackground(sf::RenderTarget& target);
+	void renderBackground(sf::RenderTarget& target);	//target is this->window
 	void renderCan(sf::RenderTarget& target);
 	void render();
 
 	///////////////Game2//////////////
 
+	void setCan2(std::string _s);
+
 	void update2();
 
+	void renderCan2(sf::RenderTarget& target);
 	void render2();
 
 

@@ -1,32 +1,16 @@
 #include "Contestant.h"
 
 
-/////////////////////////////////////////////////Contestant////////////////////////////
+//////////////////////////////////////////Contestant//////////////////////////////////
 
 
-const sf::Sprite Contestant::getSprite() const
+void Contestant::setTexture(sf::RenderTarget& window, std::string _s)
 {
-	return sprite;
-}
-
-
-
-/////////////////////////////////////////////////////Enemy/////////////////////////////////////////////////////////////////
-
-//Private Functions
-void Enemy::initializeSprite(sf::RenderTarget& window)
-{
-	//Loads basic texture and sprite
 	try
 	{
-		if (this->texture.loadFromFile("images/Pudzian_przeciwnik.png"))
+		if (this->texture.loadFromFile(_s))
 		{
 			this->sprite.setTexture(texture);
-			this->sprite.setScale(0.5f, 0.5f);
-			this->sprite.setPosition(
-				static_cast<float>(static_cast<int>(window.getSize().x - this->texture.getSize().x) * 0.625f),
-				static_cast<float>(static_cast<int>(window.getSize().y - this->texture.getSize().y) * 0.667f)
-			);
 		}
 		else
 		{
@@ -36,8 +20,31 @@ void Enemy::initializeSprite(sf::RenderTarget& window)
 	catch (Exception^ ex)
 	{
 		MessageBox::Show(ex->Message);
-		std::cout << "Nie zaladowano enemy \n";
+		std::cout << "Nie zaladowano celownika \n";
 	}
+}
+
+const sf::Sprite Contestant::getSprite() const
+{
+	return sprite;
+}
+
+
+
+
+///////////////////////////////////////////Enemy/////////////////////////////////////////////
+
+//Private Functions
+
+void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
+{
+	//Loads basic texture and sprite
+	this->setTexture(window, _s);
+	this->sprite.setScale(0.5f, 0.5f);
+	this->sprite.setPosition(
+		static_cast<float>(static_cast<int>(window.getSize().x - this->texture.getSize().x) * 0.625f),
+		static_cast<float>(static_cast<int>(window.getSize().y - this->texture.getSize().y) * 0.667f)
+	);
 }
 
 void Enemy::initializeVariables()
@@ -49,7 +56,7 @@ void Enemy::initializeVariables()
 //Constructors and Destructors
 Enemy::Enemy(sf::RenderTarget& window)
 {
-	this->initializeSprite(window);
+	this->setSprite(window, "images/Pudzian_przeciwnik.png");
 	this->initializeVariables();	
 }
 
@@ -72,36 +79,22 @@ void Enemy::render(sf::RenderTarget& window)
 
 
 
-/////////////////////////////////////////////////////Player////////////////////////////////////////////////////////////////
+///////////////////////////////////////////Player///////////////////////////////////////////////
 
 //Private Functions
-void Player::initializeSprite(sf::RenderTarget& window)
+
+
+void Player::setSprite(sf::RenderTarget& window, std::string _s)
 {
-	//Loads basic texture and sprite (For now. We will change it to loat given texture)
+	//Loads basic texture and sprite (For now. We will change it to load given texture)
 	//Próbowa³em, ¿eby wszystko ³adowa³o siê w jedn¹ teksturê i jednego sprita, zobaczê jak to dzia³a i czy dzia³a
-	//Edit* Póki celownik siê nie rusza - dzia³a, wyœwietla pudziana i celownik, jest git
-	//Edit** Póki co dzia³a ruszaj¹cy siê celownik i pudzian stoj¹cy - jest git
-	try
-	{
-		if (this->texture.loadFromFile("images/celownik3.png"))
-		{
-			this->sprite.setTexture(texture);
-			this->sprite.setScale(0.5f, 0.5f);
-			this->sprite.setPosition(
-				static_cast<float>(static_cast<int>(window.getSize().x) * 0.5f),
-				static_cast<float>(static_cast<int>(window.getSize().y) * 0.5f)
-			);
-		}
-		else
-		{
-			throw(1);
-		}
-	}
-	catch (Exception^ ex)
-	{
-		MessageBox::Show(ex->Message);
-		std::cout << "Nie zaladowano celownika \n";
-	}
+
+	this->setTexture(window, _s);
+	this->sprite.setScale(0.5f, 0.5f);
+	this->sprite.setPosition(
+		static_cast<float>(static_cast<int>(window.getSize().x) * 0.5f),
+		static_cast<float>(static_cast<int>(window.getSize().y) * 0.5f)
+	);
 }
 
 void Player::initializeVariables()
@@ -118,7 +111,7 @@ void Player::initializeVariables()
 //Constructors and Destructors
 Player::Player(sf::RenderTarget& window)
 {
-	this->initializeSprite(window);
+	this->setSprite(window, "images/celownik3.png");
 	this->initializeVariables();
 
 }
