@@ -1,0 +1,10 @@
+﻿  Contestant.cpp
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Contestant.cpp(52,34): warning C4305: 'argument': truncation from 'double' to 'float'
+  Game.cpp
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(33,31): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(134,49): warning C4390: ';': empty controlled statement found; is this the intent?
+  MyForm1.cpp
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\MyForm1.cpp(10,15): warning C4551: function call missing argument list
+  Generating Code...
+  Contestant.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  Flanki01.vcxproj -> C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\x64\Debug\Flanki01.exe

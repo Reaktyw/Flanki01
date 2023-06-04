@@ -1,0 +1,4 @@
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\x64\Debug\Flanki01.vcxproj.AssemblyReference.cache
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\x64\Debug\Flanki01.vcxproj.SuggestedBindingRedirects.cache
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\x64\Debug\Flanki01.MyForm1.resources
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\x64\Debug\Flanki01.vcxproj.GenerateResource.cache
