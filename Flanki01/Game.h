@@ -59,6 +59,7 @@ public:
 	//Public Functions
 	//void spawnCan();
 
+	///////////////Game1///////////////
 
 	void pollEvents();
 	void updateMousePositions();			//zrobiæ klikanie podczas picia mo¿e w Player
@@ -68,6 +69,13 @@ public:
 	void renderBackground(sf::RenderTarget& target);
 	void renderCan(sf::RenderTarget& target);
 	void render();
+
+	///////////////Game2//////////////
+
+	void update2();
+
+	void render2();
+
 
 	void start(Game _game);
 };

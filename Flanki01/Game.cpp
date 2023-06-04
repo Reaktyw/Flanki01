@@ -1,6 +1,8 @@
 
 #include "Game.h"
 
+////////////////////////////////////Game1////////////////////
+
 void Game::setTexture(std::string _s, SpriteType _spriteType)
 {
 	//Sets textures based on enum class
@@ -148,36 +150,39 @@ void Game::pollEvents()
 				this->window->close(); break;
 			}
 		case sf::Event::MouseButtonPressed:
-			if (this->ev.key.code == sf::Mouse::Left && this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()) && your_turn == true)
+		{
+			if (this->ev.key.code == sf::Mouse::Left && your_turn == true)
 			{
-
 				this->your_turn = false;
+				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()) )
+				{
+					int x = rand() % 1;
+					if (x != 1) 
+					{
+						this->is_collapsed = true;
 
-				int x = rand() % 1;
-				if (x != 1) {
-					this->is_collapsed = true;
+						this->setBackground("images/pusty1.png");
+						//this->status = Condition::Gra2;
+					}
 
-					this->setBackground("images/pusty1.png");
-					this->status = Condition::Gra2;
+					//ODPALAMY PICIE
+
+					//while (!game2_end)
+					//{
+
+						//PIJEMY
+
+
+						//na koñcu gry game2_end = true;
+					//}
+
 				}
-
-				//ODPALAMY PICIE
-
-				//while (!game2_end)
-				//{
-
-					//PIJEMY
-					
-
-					//na koñcu gry game2_end = true;
-				//}
-
-
 			}
 			else if (this->ev.key.code == sf::Mouse::Right)
 			{
 				this->is_collapsed = false;
 			}
+		}
 		}
 	}
 }
@@ -245,6 +250,19 @@ void Game::render()
 	this->window->display();
 }
 
+
+/////////////////////////////////////Game2////////////////////////////////
+void Game::update2()
+{
+
+}
+
+void Game::render2()
+{
+
+}
+
+
 void Game::start(Game _game)
 {
 	while (_game.getWindowIsOpen() && !_game.getEndGame())
@@ -262,9 +280,11 @@ void Game::start(Game _game)
 		{
 			//_game.update2();
 
+
 			//_game.render2();
 		}
 
+		this->status = _game.getCondition();
 	}
 }
 
