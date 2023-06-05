@@ -4,7 +4,7 @@
 //#include "Contestant.h"
 
 namespace Flanki01 {
-
+	Game* game = new Game();							/////////////////////////////////////////////
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -18,9 +18,11 @@ namespace Flanki01 {
 	public ref class MyForm1 : public System::Windows::Forms::Form
 	{
 	public:
+		//Game* game = new Game();
 		MyForm1(void)
 		{
 			InitializeComponent();
+			
 			//
 			//TODO: Add the constructor code here
 			//
@@ -225,6 +227,7 @@ namespace Flanki01 {
 			this->button5->Size = System::Drawing::Size(86, 86);
 			this->button5->TabIndex = 3;
 			this->button5->UseVisualStyleBackColor = false;
+			this->button5->Click += gcnew System::EventHandler(this, &MyForm1::button5_Click);
 			// 
 			// button4
 			// 
@@ -282,10 +285,10 @@ namespace Flanki01 {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e)
 	{
-		Game game;
 		MyForm1::Visible = false;
-		game.start(game);
+		game->start(*game);
 		MyForm1::Visible = true;
+		//delete game;
 	}
 
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e)
@@ -301,5 +304,8 @@ namespace Flanki01 {
 		panel2->Visible = false;
 		panel1->Visible = true;
 	}
+private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
+	game->setCan("images/beczkowe_wisnia.png");
+}
 };
 }

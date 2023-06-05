@@ -121,7 +121,7 @@ Game::Game()
 	this->initializeWindow();
 	this->setBackground("images/Plansza1.png");
 	this->setCan("images/Icon.png");
-	this->setCan2("images/kozel.png");//?
+	this->setCan2("images/kozel.png");
 
 	Enemy1 = new Enemy(*this->window);
 	Player1 = new Player(*this->window);
@@ -190,12 +190,6 @@ void Game::pollEvents()
 					{
 						//this->
 					}
-					//ODPALAMY PICIE
-					
-						//PIJEMY
-
-
-						//na koñcu gry game2_end = true;
 
 				}
 			}

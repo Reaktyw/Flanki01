@@ -38,7 +38,6 @@ private:
 	void setTexture(std::string _s, SpriteType _spriteType);
 	void initializeVariables();		//Podstawowe inicjalizowanie
 	void initializeWindow();
-	void setCan(std::string _s);
 	void setBackground(std::string _s);
 
 
@@ -57,6 +56,7 @@ public:
 	//void spawnCan();
 
 	///////////////Game1///////////////
+	void setCan(std::string _s);
 
 	void pollEvents();
 	void enemyTurn();
