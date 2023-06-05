@@ -50,7 +50,6 @@ void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
 void Enemy::initializeVariables()
 {
 	//Intializes basics
-
 }
 
 //Constructors and Destructors
@@ -156,102 +155,4 @@ void Player::render(sf::RenderTarget& window)
 	window.draw(this->sprite);
 }
 
-
-
-
-
-
-
-
-////Private Functions
-//void Contestant::initializeVariables()
-//{
-//	this->name = "";
-//	this->drinkingSpeed = 0.f;
-//	this->runningSpeed = 0.f;
-//	this->accuracy = 0;
-//}
-//
-////void Contestant::initializeTexture()
-////{
-////
-////}
-//
-////Constructors and Destructors
-//Contestant::Contestant(std::string n, float dS, float rS, int a) : name(n), drinkingSpeed(dS), runningSpeed(rS), accuracy(a)
-//{
-//	this->initializeVariables();
-//}
-//
-//Contestant::~Contestant()
-//{
-//
-//}
-//
-//
-//
-////Class Enemy
-//Enemy::Enemy(std::string n, float dS, float rS, int a, int diL, sf::RenderWindow* window) : Contestant(n, dS, rS, a), difficultyLevel(diL)
-//{
-//	this->setTexture(window);
-//}
-//
-//
-//Enemy::~Enemy()
-//{
-//	//?
-//}
-//
-////
-//void Enemy::setTexture(sf::RenderWindow* window)
-//{
-//	try
-//	{
-//		if (this->texture.loadFromFile("images/Pudzian_przeciwnik.png"))
-//		{
-//			this->sprite.setTexture(texture);
-//			this->sprite.setScale(0.2f, 0.2f);
-//			this->sprite.setPosition(
-//				static_cast<float>(/*rand() % */static_cast<int>(window->getSize().x - this->texture.getSize().x) / 1.15f),
-//				static_cast<float>(/*rand() % */static_cast<int>(window->getSize().y - this->texture.getSize().y) / 1.4f)
-//			);
-//		}
-//		else
-//		{
-//			throw(1);
-//		}
-//	}
-//	catch (Exception^ ex)
-//	{
-//		MessageBox::Show(ex->Message);
-//		std::cout << "Nie zaladowano enemy \n";
-//	}
-//}
-//
-//void Enemy::render(sf::RenderTarget& target)
-//{
-//	target.draw(this->sprite);
-//}
-//
-//
-////Class Player
-//Player::Player(std::string n, float dS, float rS, int a, int duL) : Contestant(n, dS, rS, a), drunkLevel(duL)
-//{
-//
-//}
-//
-//Player::~Player()
-//{
-//
-//}
-//
-//void Player::setTexture(sf::RenderWindow* window)
-//{
-//
-//}
-//
-//void Player::render(sf::RenderTarget& target)
-//{
-//	//target.draw(this->sprite);
-//}
 

@@ -23,6 +23,8 @@ private:
 	float canEmptiness;						//zrobiæ
 	bool your_turn;
 	bool is_collapsed;
+	bool render_once;
+	sf::Time elapsedTime;
 
 
 	//Game objects
@@ -57,6 +59,7 @@ public:
 	///////////////Game1///////////////
 
 	void pollEvents();
+	void enemyTurn();
 	void updateMousePositions();			//zrobiæ klikanie podczas picia mo¿e w Player
 	void updateCan();
 	void update();

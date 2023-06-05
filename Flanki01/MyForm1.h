@@ -73,6 +73,7 @@ namespace Flanki01 {
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->button13 = (gcnew System::Windows::Forms::Button());
 			this->button10 = (gcnew System::Windows::Forms::Button());
 			this->button9 = (gcnew System::Windows::Forms::Button());
 			this->button8 = (gcnew System::Windows::Forms::Button());
@@ -82,7 +83,6 @@ namespace Flanki01 {
 			this->button4 = (gcnew System::Windows::Forms::Button());
 			this->button11 = (gcnew System::Windows::Forms::Button());
 			this->button12 = (gcnew System::Windows::Forms::Button());
-			this->button13 = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->SuspendLayout();
@@ -159,6 +159,16 @@ namespace Flanki01 {
 			this->panel2->TabIndex = 4;
 			this->panel2->Visible = false;
 			// 
+			// button13
+			// 
+			this->button13->Location = System::Drawing::Point(362, 328);
+			this->button13->Name = L"button13";
+			this->button13->Size = System::Drawing::Size(75, 23);
+			this->button13->TabIndex = 9;
+			this->button13->Text = L"button13";
+			this->button13->UseVisualStyleBackColor = true;
+			this->button13->Click += gcnew System::EventHandler(this, &MyForm1::button13_Click);
+			// 
 			// button10
 			// 
 			this->button10->Location = System::Drawing::Point(267, 233);
@@ -197,6 +207,8 @@ namespace Flanki01 {
 			// 
 			// button6
 			// 
+			this->button6->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button6.BackgroundImage")));
+			this->button6->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->button6->Location = System::Drawing::Point(145, 131);
 			this->button6->Name = L"button6";
 			this->button6->Size = System::Drawing::Size(91, 86);
@@ -206,11 +218,12 @@ namespace Flanki01 {
 			// 
 			// button5
 			// 
+			this->button5->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button5.BackgroundImage")));
+			this->button5->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->button5->Location = System::Drawing::Point(25, 131);
 			this->button5->Name = L"button5";
 			this->button5->Size = System::Drawing::Size(86, 86);
 			this->button5->TabIndex = 3;
-			this->button5->Text = L"button5";
 			this->button5->UseVisualStyleBackColor = false;
 			// 
 			// button4
@@ -243,22 +256,11 @@ namespace Flanki01 {
 			this->button12->Text = L"button12";
 			this->button12->UseVisualStyleBackColor = false;
 			// 
-			// button13
-			// 
-			this->button13->Location = System::Drawing::Point(362, 328);
-			this->button13->Name = L"button13";
-			this->button13->Size = System::Drawing::Size(75, 23);
-			this->button13->TabIndex = 9;
-			this->button13->Text = L"button13";
-			this->button13->UseVisualStyleBackColor = true;
-			this->button13->Click += gcnew System::EventHandler(this, &MyForm1::button13_Click);
-			// 
 			// MyForm1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
-			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->ClientSize = System::Drawing::Size(782, 553);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->panel1);

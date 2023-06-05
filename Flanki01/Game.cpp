@@ -79,6 +79,7 @@ void Game::initializeVariables()
 	this->canEmptiness = 0;
 	this->is_collapsed = false;
 	this->your_turn = true;
+	this->render_once = true;
 }
 
 void Game::initializeWindow()
@@ -120,6 +121,7 @@ Game::Game()
 	this->initializeWindow();
 	this->setBackground("images/Plansza1.png");
 	this->setCan("images/Icon.png");
+	this->setCan2("images/kozel.png");//?
 
 	Enemy1 = new Enemy(*this->window);
 	Player1 = new Player(*this->window);
@@ -176,15 +178,18 @@ void Game::pollEvents()
 				this->your_turn = false;
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()) )
 				{
-					int x = rand() % 1;
-					if (x != 1) 
+					int x = rand() % 2;
+					if (x == 0) 
 					{
 						this->is_collapsed = true;
 
-						this->setBackground("images/pusty1.png");
 						this->status = Condition::Game2;
+						this->render_once = true;
 					}
-
+					else if (x == 1)
+					{
+						//this->
+					}
 					//ODPALAMY PICIE
 					
 						//PIJEMY
@@ -194,15 +199,30 @@ void Game::pollEvents()
 
 				}
 			}
+			/*else if (this->your_turn == false)
+			{
+				this->enemyTurn();
+			}*/
+
 			else if (this->ev.key.code == sf::Mouse::Right)
 			{
 				this->your_turn = true;
 				this->is_collapsed = false;
 				this->status = Condition::Game1;
+				this->render_once = true;
 			}
 		}
 		}
 	}
+}
+
+void Game::enemyTurn()
+{
+	/*if (this->Enemy1->getEnemyTurn() <= this->elapsedTime)
+	{
+		this->your_turn = true;
+		elapsedTime = sf::Time::Zero;
+	}*/
 }
 
 void Game::updateMousePositions()
@@ -228,10 +248,8 @@ void Game::update()
 
 	if (this->getEndGame() == false)
 	{
-		this->setBackground("images/Plansza1.png");
 
 		this->updateCan();
-		this->setCan("images/Icon.png");
 
 		this->updateMousePositions();
 
@@ -256,6 +274,7 @@ void Game::renderCan(sf::RenderTarget& target)
 	target.draw(this->can);
 }
 
+
 void Game::render()
 {
 	this->window->clear(sf::Color::Black);
@@ -278,12 +297,11 @@ void Game::setCan2(std::string _s)
 	//Sets can and checks exeption
 	this->setTexture(_s, SpriteType::Can2);
 
-	this->can2.setScale(0.2f, 0.2f);
+	this->can2.setScale(2.5f, 3.0f);
 	this->can2.setPosition(
-		(this->window->getSize().x) * 0.1f,
-		(this->window->getSize().y) * 0.85f
+		(this->window->getSize().x) * 0.01f,
+		(this->window->getSize().y) * 0.6f
 	);
-	this->can2.setOrigin(100.f, this->can2.getGlobalBounds().top + this->can2.getGlobalBounds().height - 150.f);
 }
 
 void Game::renderCan2(sf::RenderTarget& target)
@@ -299,8 +317,6 @@ void Game::update2()
 	{
 		this->updateMousePositions();
 
-		this->setCan2("images/Icon.png");
-
 		Player1->update(*this->window);
 
 		this->updateCan();
@@ -312,7 +328,7 @@ void Game::render2()
 	this->window->clear(sf::Color::Black);
 
 	this->renderBackground(*this->window);
-
+	
 	Enemy1->render(*this->window);
 
 	this->renderCan(*this->window);
@@ -324,9 +340,11 @@ void Game::render2()
 	this->window->display();
 }
 
-
 void Game::start(Game _game)
 {
+	sf::Clock clock;
+	sf::Time elapsedTime;
+
 	while (_game.getWindowIsOpen() && !_game.getEndGame())
 	{
 
@@ -348,6 +366,7 @@ void Game::start(Game _game)
 		}
 
 		this->status = _game.getCondition();
+
 	}
 }
 

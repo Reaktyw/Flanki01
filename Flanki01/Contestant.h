@@ -49,12 +49,15 @@ public:
 class Enemy : public Contestant
 {
 private:
+
 	void setSprite(sf::RenderTarget& window, std::string _s);
 	void initializeVariables();
 public:
 
 	Enemy(sf::RenderTarget& window);
 	~Enemy();
+
+	sf::Time getEnemyTurn();
 
 	void update(sf::RenderTarget& window);
 	void render(sf::RenderTarget& window);
