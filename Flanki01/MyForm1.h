@@ -134,6 +134,7 @@ namespace Flanki01 {
 			// panel1
 			// 
 			this->panel1->BackColor = System::Drawing::Color::Transparent;
+			this->panel1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->panel1->Controls->Add(this->button1);
 			this->panel1->Controls->Add(this->button3);
 			this->panel1->Controls->Add(this->button2);
@@ -200,12 +201,15 @@ namespace Flanki01 {
 			// 
 			// button7
 			// 
+			this->button7->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button7.BackgroundImage")));
+			this->button7->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
 			this->button7->Location = System::Drawing::Point(267, 131);
 			this->button7->Name = L"button7";
 			this->button7->Size = System::Drawing::Size(91, 86);
 			this->button7->TabIndex = 5;
 			this->button7->Text = L"button7";
 			this->button7->UseVisualStyleBackColor = false;
+			this->button7->Click += gcnew System::EventHandler(this, &MyForm1::button7_Click);
 			// 
 			// button6
 			// 
@@ -217,6 +221,7 @@ namespace Flanki01 {
 			this->button6->TabIndex = 4;
 			this->button6->Text = L"button6";
 			this->button6->UseVisualStyleBackColor = false;
+			this->button6->Click += gcnew System::EventHandler(this, &MyForm1::button6_Click);
 			// 
 			// button5
 			// 
@@ -305,7 +310,13 @@ namespace Flanki01 {
 		panel1->Visible = true;
 	}
 private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
-	game->setCan("images/beczkowe_wisnia.png");
+	game->setCan("images/beczkowe_wisnia.png", canType::Beczkowe);
+}
+private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
+	game->setCan("images/kustosz.png", canType::Kustosz);
+}
+private: System::Void button7_Click(System::Object^ sender, System::EventArgs^ e) {
+	game->setCan("images/harnas.png", canType::Harnas);
 }
 };
 }

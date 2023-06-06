@@ -89,17 +89,42 @@ void Game::initializeWindow()
 	this->window->setFramerateLimit(40);
 }
 
-void Game::setCan(std::string _s)
+void Game::setCan(std::string _s, canType _can_type)
 {
 	//Sets can and checks exeption
-	this->setTexture(_s, SpriteType::Can);
+	if (_can_type == canType::Beczkowe)
+	{
+		this->setTexture(_s, SpriteType::Can);
+		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
+		this->can.setPosition(
+			(this->window->getSize().x) * 0.55f,
+			(this->window->getSize().y) * 0.65f
+		);
+		this->can.setOrigin(100.f, 200.f);
+	}
+	else if (_can_type == canType::Harnas)
+	{
+		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
+		this->setTexture(_s, SpriteType::Can);
+		this->can.setPosition(
+			(this->window->getSize().x) * 0.55f,
+			(this->window->getSize().y) * 0.65f
+		);
+		this->can.setOrigin(10.f, 20.f);
+	}
+	else if (_can_type == canType::Kustosz)
+	{
+		this->setTexture(_s, SpriteType::Can);
+		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
+		this->can.setPosition(
+			(this->window->getSize().x) * 0.55f,
+			(this->window->getSize().y) * 0.65f
+		);
+		//this->can.setOrigin(100.f, this->can.getGlobalBounds().top + this->can.getGlobalBounds().height - 150.f);
+	}
+	
 
-	this->can.setScale(0.2f, 0.2f);
-	this->can.setPosition(
-		(this->window->getSize().x) * 0.5f,
-		(this->window->getSize().y) * 0.65f
-	);
-	this->can.setOrigin(100.f, this->can.getGlobalBounds().top + this->can.getGlobalBounds().height - 150.f);
+
 
 }
 
@@ -120,7 +145,7 @@ Game::Game()
 	this->initializeVariables();
 	this->initializeWindow();
 	this->setBackground("images/Plansza1.png");
-	this->setCan("images/Icon.png");
+	this->setCan("images/beczkowe_wisnia.png", canType::Beczkowe);
 	this->setCan2("images/kozel.png");
 
 	Enemy1 = new Enemy(*this->window);
@@ -178,8 +203,8 @@ void Game::pollEvents()
 				this->your_turn = false;
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()) )
 				{
-					int x = rand() % 2;
-					if (x == 0) 
+					int x = rand() % 1;
+					if (x != 1) 
 					{
 						this->is_collapsed = true;
 

@@ -16,6 +16,7 @@ private:
 	sf::Vector2i mousePosWindow;
 	Condition status;
 	SpriteType type;
+	canType can_type;
 
 
 	//Game logic
@@ -56,7 +57,7 @@ public:
 	//void spawnCan();
 
 	///////////////Game1///////////////
-	void setCan(std::string _s);
+	void setCan(std::string _s, canType _cantype);
 
 	void pollEvents();
 	void enemyTurn();

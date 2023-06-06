@@ -99,8 +99,8 @@ void Player::setSprite(sf::RenderTarget& window, std::string _s)
 void Player::initializeVariables()
 {
 	//Intializes basics
-	this->aimVelocity_x = 5.f;
-	this->aimVelocity_y = 5.f;
+	this->aimVelocity_x = 10.f;
+	this->aimVelocity_y = 8.f;
 	this->points = 0;
 }
 

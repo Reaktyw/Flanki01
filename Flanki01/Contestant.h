@@ -21,6 +21,10 @@ enum class SpriteType {
 	Background, Can, Can2
 };
 
+enum class canType {
+	Beczkowe, Harnas, Kustosz
+};
+
 class Contestant
 {
 private:
