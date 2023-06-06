@@ -33,14 +33,14 @@ protected:
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	void setTexture(sf::RenderTarget& window, std::string _s);
-	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
 	virtual void initializeVariables() = 0;
 
 public:
 	Contestant() {};
 	virtual ~Contestant() {};
 
+	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
+	void setTexture(sf::RenderTarget& window, std::string _s);
 	const sf::Sprite getSprite() const;
 
 	virtual void update(sf::RenderTarget& window) = 0;
@@ -54,14 +54,15 @@ class Enemy : public Contestant
 {
 private:
 
-	void setSprite(sf::RenderTarget& window, std::string _s);
+	
 	void initializeVariables();
 public:
 
 	Enemy(sf::RenderTarget& window);
 	~Enemy();
 
-	sf::Time getEnemyTurn();
+	void setSprite(sf::RenderTarget& window, std::string _s);
+	//sf::Time getEnemyTurn();
 
 	void update(sf::RenderTarget& window);
 	void render(sf::RenderTarget& window);
@@ -76,13 +77,13 @@ private:
 	float aimVelocity_y;
 	float points;							//zrobiæ
 
-	void setSprite(sf::RenderTarget& window, std::string _s);
 	void initializeVariables();
 
 public:
 	Player(sf::RenderTarget& window);
 	~Player();
 
+	void setSprite(sf::RenderTarget& window, std::string _s);
 	void updateWindowBoundsCollision(sf::RenderTarget& window);
 
 	const sf::Sprite getSprite() const;

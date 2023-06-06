@@ -104,13 +104,13 @@ void Game::setCan(std::string _s, canType _can_type)
 	}
 	else if (_can_type == canType::Harnas)
 	{
-		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
+		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 140.0f / this->can.getGlobalBounds().height);
 		this->setTexture(_s, SpriteType::Can);
 		this->can.setPosition(
 			(this->window->getSize().x) * 0.55f,
 			(this->window->getSize().y) * 0.65f
 		);
-		this->can.setOrigin(10.f, 20.f);
+		this->can.setOrigin(100.f, 200.f);
 	}
 	else if (_can_type == canType::Kustosz)
 	{
@@ -120,20 +120,8 @@ void Game::setCan(std::string _s, canType _can_type)
 			(this->window->getSize().x) * 0.55f,
 			(this->window->getSize().y) * 0.65f
 		);
-		//this->can.setOrigin(100.f, this->can.getGlobalBounds().top + this->can.getGlobalBounds().height - 150.f);
+		this->can.setOrigin(100.f, 200.f);
 	}
-	
-
-
-<<<<<<< HEAD
-=======
-	this->can.setScale(200.0f/this->can.getGlobalBounds().width, 200.0f/this->can.getGlobalBounds().height);
-	this->can.setPosition(
-		(this->window->getSize().x) * 0.5f,
-		(this->window->getSize().y) * 0.65f
-	);
-	this->can.setOrigin(100.f, this->can.getGlobalBounds().top + this->can.getGlobalBounds().height - 150.f);
->>>>>>> 09a1836332abf771ccd6c339d5ca45b6f126ef83
 
 }
 
@@ -216,9 +204,10 @@ void Game::pollEvents()
 					if (x != 1) 
 					{
 						this->is_collapsed = true;
-
 						this->status = Condition::Game2;
 						this->render_once = true;
+
+						this->Enemy1->setSprite(*this->window, "images/pusty1.png");
 					}
 					else if (x == 1)
 					{
@@ -238,6 +227,7 @@ void Game::pollEvents()
 				this->is_collapsed = false;
 				this->status = Condition::Game1;
 				this->render_once = true;
+				this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
 			}
 		}
 		}

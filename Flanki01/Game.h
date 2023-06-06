@@ -11,6 +11,7 @@ private:
 	sf::RenderWindow* window;
 	sf::Event ev;
 	sf::Texture textureBackground;
+	sf::Texture textureBackground2;
 	sf::Texture textureCan;
 	sf::Texture textureCan2;
 	sf::Vector2i mousePosWindow;
@@ -32,6 +33,7 @@ private:
 	sf::Sprite can;
 	sf::Sprite can2;
 	sf::Sprite background;
+	sf::Sprite background2;
 	Contestant* Enemy1;
 	Contestant* Player1;
 

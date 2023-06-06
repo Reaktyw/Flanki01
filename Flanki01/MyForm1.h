@@ -316,7 +316,7 @@ private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e
 	game->setCan("images/kustosz.png", canType::Kustosz);
 }
 private: System::Void button7_Click(System::Object^ sender, System::EventArgs^ e) {
-	game->setCan("images/harnas.png", canType::Harnas);
+	game->setCan("images/harnas3.png", canType::Harnas);
 }
 };
 }
