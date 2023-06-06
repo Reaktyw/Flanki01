@@ -22,7 +22,7 @@ void Game::setTexture(std::string _s, SpriteType _spriteType)
 		catch (Exception^ ex)
 		{
 			MessageBox::Show(ex->Message);
-			std::cout << "Nie zaladowano t³a \n";
+			std::cout << "Nie zaladowano tÂ³a \n";
 		}
 	}
 
@@ -125,6 +125,15 @@ void Game::setCan(std::string _s, canType _can_type)
 	
 
 
+<<<<<<< HEAD
+=======
+	this->can.setScale(200.0f/this->can.getGlobalBounds().width, 200.0f/this->can.getGlobalBounds().height);
+	this->can.setPosition(
+		(this->window->getSize().x) * 0.5f,
+		(this->window->getSize().y) * 0.65f
+	);
+	this->can.setOrigin(100.f, this->can.getGlobalBounds().top + this->can.getGlobalBounds().height - 150.f);
+>>>>>>> 09a1836332abf771ccd6c339d5ca45b6f126ef83
 
 }
 
@@ -393,5 +402,5 @@ void Game::start(Game _game)
 
 //TODO
 
-//Dlaczego wywala b³¹d przy delete Player i okna
-//Dlaczego ci¹gle dzia³a if z Gra1 w metodzie start
+//Dlaczego wywala bÂ³Â¹d przy delete Player i okna
+//Dlaczego ciÂ¹gle dziaÂ³a if z Gra1 w metodzie start
