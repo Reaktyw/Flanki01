@@ -22,8 +22,10 @@ enum class SpriteType {
 };
 
 enum class canType {
-	Beczkowe, Harnas, Kustosz
+	Beczkowe, Harnas, Kustosz, Zubr
 };
+
+
 
 class Contestant
 {
@@ -32,6 +34,8 @@ private:
 protected:
 	sf::Texture texture;
 	sf::Sprite sprite;
+	float drinkingSpeed;
+	float points;
 
 	virtual void initializeVariables() = 0;
 
@@ -39,6 +43,10 @@ public:
 	Contestant() {};
 	virtual ~Contestant() {};
 
+	virtual void setDrinkingSpeed(float _d) = 0;
+	virtual float getDrinkingSpeed() = 0;
+	virtual void setPoints(float _p) = 0;
+	virtual float getPoints() = 0;
 	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
 	void setTexture(sf::RenderTarget& window, std::string _s);
 	const sf::Sprite getSprite() const;
@@ -53,7 +61,6 @@ public:
 class Enemy : public Contestant
 {
 private:
-
 	
 	void initializeVariables();
 public:
@@ -61,8 +68,12 @@ public:
 	Enemy(sf::RenderTarget& window);
 	~Enemy();
 
+	void setDrinkingSpeed(float _d) {};
+	float getDrinkingSpeed();
+	void setPoints(float _d) {};
+	float getPoints() { return this->points; };
+
 	void setSprite(sf::RenderTarget& window, std::string _s);
-	//sf::Time getEnemyTurn();
 
 	void update(sf::RenderTarget& window);
 	void render(sf::RenderTarget& window);
@@ -75,7 +86,7 @@ class Player : public Contestant
 private:
 	float aimVelocity_x;
 	float aimVelocity_y;
-	float points;							//zrobiæ
+	float drinkingSpeed;
 
 	void initializeVariables();
 
@@ -85,6 +96,11 @@ public:
 
 	void setSprite(sf::RenderTarget& window, std::string _s);
 	void updateWindowBoundsCollision(sf::RenderTarget& window);
+
+	void setDrinkingSpeed(float _d);
+	float getDrinkingSpeed() { return this->drinkingSpeed; };
+	void setPoints(float _d);
+	float getPoints();
 
 	const sf::Sprite getSprite() const;
 

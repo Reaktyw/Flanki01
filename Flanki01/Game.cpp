@@ -80,6 +80,17 @@ void Game::initializeVariables()
 	this->is_collapsed = false;
 	this->your_turn = true;
 	this->render_once = true;
+
+	this->startCountdown = false;
+
+	this->brickSpawnTimerMax = 10.f;
+	this->brickSpawnTimer = this->brickSpawnTimerMax;
+	this->mouseHeld = false;
+	this->maxBricks = 10;
+	this->can_type[0] = canType::Beczkowe;
+	this->can_type[1] = canType::Zubr;
+	this->can_type[2] = canType::Harnas;
+	this->can_type[3] = canType::Kustosz;
 }
 
 void Game::initializeWindow()
@@ -92,7 +103,8 @@ void Game::initializeWindow()
 void Game::setCan(std::string _s, canType _can_type)
 {
 	//Sets can and checks exeption
-	if (_can_type == canType::Beczkowe)
+	
+	if (_can_type == canType::Beczkowe && this->getCondition() == Condition::Game1)
 	{
 		this->setTexture(_s, SpriteType::Can);
 		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
@@ -102,7 +114,7 @@ void Game::setCan(std::string _s, canType _can_type)
 		);
 		this->can.setOrigin(100.f, 200.f);
 	}
-	else if (_can_type == canType::Harnas)
+	else if (_can_type == canType::Harnas && this->getCondition() == Condition::Game1)
 	{
 		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 140.0f / this->can.getGlobalBounds().height);
 		this->setTexture(_s, SpriteType::Can);
@@ -112,7 +124,7 @@ void Game::setCan(std::string _s, canType _can_type)
 		);
 		this->can.setOrigin(100.f, 200.f);
 	}
-	else if (_can_type == canType::Kustosz)
+	else if (_can_type == canType::Kustosz && this->getCondition() == Condition::Game1)
 	{
 		this->setTexture(_s, SpriteType::Can);
 		this->can.setScale(70.0f / this->can.getGlobalBounds().width, 150.0f / this->can.getGlobalBounds().height);
@@ -134,7 +146,6 @@ void Game::setBackground(std::string _s)
 	);
 	this->background.setTextureRect(sf::IntRect(0, 0, 1500, 1500));
 }
-
 
 //Constructors and Destructors
 Game::Game()
@@ -201,13 +212,13 @@ void Game::pollEvents()
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()) )
 				{
 					int x = rand() % 1;
-					if (x != 1) 
+					if (x != 1)
 					{
+						this->clock.restart();
 						this->is_collapsed = true;
-						this->status = Condition::Game2;
-						this->render_once = true;
-
+						this->startCountdown = true;
 						this->Enemy1->setSprite(*this->window, "images/pusty1.png");
+						this->status = Condition::Game2;
 					}
 					else if (x == 1)
 					{
@@ -226,7 +237,7 @@ void Game::pollEvents()
 				this->your_turn = true;
 				this->is_collapsed = false;
 				this->status = Condition::Game1;
-				this->render_once = true;
+
 				this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
 			}
 		}
@@ -243,9 +254,11 @@ void Game::enemyTurn()
 	}*/
 }
 
+
 void Game::updateMousePositions()
 {
 	this->mousePosWindow = sf::Mouse::getPosition(*this->window);
+	this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
 }
 
 void Game::updateCan()
@@ -266,7 +279,6 @@ void Game::update()
 
 	if (this->getEndGame() == false)
 	{
-
 		this->updateCan();
 
 		this->updateMousePositions();
@@ -310,6 +322,65 @@ void Game::render()
 
 
 /////////////////////////////////////Game2////////////////////////////////
+//Private Functions
+void Game::initializeFont()
+{
+
+}
+
+void Game::initializeText()
+{
+
+}
+
+
+//Public functions
+void Game::spawnBrick()
+{
+	/*
+	Spawns bricks and sets types, colours, positions
+	*/
+
+	//Randomize type
+	int type = rand() % 4;
+
+	switch (type)
+	{
+	case 0:
+		this->setBrick("images/beczkowe_wisnia.png", canType::Beczkowe);
+		break;
+	case 1:
+		this->setBrick("images/zubr.png", canType::Zubr);
+		break;
+	case 2:
+		this->setBrick("images/harnas.png", canType::Harnas);
+		break;
+	case 3:
+		this->setBrick("images/kustosz.png", canType::Kustosz);
+		break;
+	}
+
+	//Spawn brick
+	this->bricks.emplace_back(this->brick);
+}
+
+void Game::updateText()
+{
+
+}
+
+void Game::renderText(sf::RenderTarget& target)
+{
+
+}
+
+void Game::renderBricks(sf::RenderTarget& target)
+{
+	for (auto& el : this->bricks) {
+		target.draw(el);
+	}
+}
+
 void Game::setCan2(std::string _s)
 {
 	//Sets can and checks exeption
@@ -322,9 +393,197 @@ void Game::setCan2(std::string _s)
 	);
 }
 
+void Game::setTextureBrick(std::string _s, canType _can_type)
+{
+	if (_can_type == canType::Zubr)
+	{
+		try
+		{
+			if (this->brickTexture[0].loadFromFile(_s))
+			{
+				this->brick.setTexture(this->brickTexture[0]);
+			}
+			else
+			{
+				throw(1);
+			}
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show(ex->Message);
+			std::cout << "Nie zaladowano brick 0 \n";
+		}
+	}
+	else if (_can_type == canType::Harnas)
+	{
+		try
+		{
+			if (this->brickTexture[1].loadFromFile(_s))
+			{
+				this->brick.setTexture(this->brickTexture[1]);
+			}
+			else
+			{
+				throw(1);
+			}
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show(ex->Message);
+			std::cout << "Nie zaladowano brick 1 \n";
+		}
+	}
+	else if (_can_type == canType::Kustosz)
+	{
+		try
+		{
+			if (this->brickTexture[2].loadFromFile(_s))
+			{
+				this->brick.setTexture(this->brickTexture[2]);
+			}
+			else
+			{
+				throw(1);
+			}
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show(ex->Message);
+			std::cout << "Nie zaladowano brick 2 \n";
+		}
+	}
+	else if (_can_type == canType::Beczkowe)
+	{
+		try
+		{
+			if (this->brickTexture[3].loadFromFile(_s))
+			{
+				this->brick.setTexture(this->brickTexture[3]);
+			}
+			else
+			{
+				throw(1);
+			}
+		}
+		catch (Exception^ ex)
+		{
+			MessageBox::Show(ex->Message);
+			std::cout << "Nie zaladowano brick 3 \n";
+		}
+	}
+}
+
+void Game::setBrick(std::string _s, canType _can_type)
+{
+	this->setTextureBrick(_s, _can_type);
+	this->brick.setScale(0.4f, 0.4f);
+	this->brick.setPosition(
+		static_cast<float>(rand() % static_cast<int>(
+			(this->window->getSize().x - this->brick.getGlobalBounds().width) / 2) + this->window->getSize().x / 2),
+		0.f
+	);
+	if (_can_type == canType::Zubr)
+	{
+		this->brick.setScale(1.f, 1.f);
+	}
+}
+
+canType Game::getCan()
+{
+	return *this->can_type;
+}
+
+
 void Game::renderCan2(sf::RenderTarget& target)
 {
 	target.draw(this->can2);
+}
+
+void Game::updateBricks()
+{
+	//Updating timer for brick spawning
+	if (this->bricks.size() < this->maxBricks) {
+		if (this->brickSpawnTimer >= this->brickSpawnTimerMax)
+		{
+			//Spawn brick and reset the timer
+			this->spawnBrick();
+			this->brickSpawnTimer = 0.f;
+		}
+		else
+			this->brickSpawnTimer += 1.f;
+	}
+
+	//Move and update bricks
+	for (int i = 0; i < this->bricks.size(); i++) {
+
+		bool deleted = false;
+
+		this->bricks[i].move(0.f, 5.f);
+
+		//Delete at bottom
+		if (this->bricks[i].getPosition().y > this->window->getSize().y)
+		{
+			this->bricks.erase(this->bricks.begin() + i);
+			this->Player1->setDrinkingSpeed(-1);
+		}
+
+
+	}
+	//Check if clicked
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		if (this->mouseHeld == false)
+		{
+			this->mouseHeld = true;
+
+			bool deleted = false;
+
+			for (int i = 0; i < this->bricks.size() && deleted == false; i++)
+			{
+				if (this->bricks[i].getGlobalBounds().contains(this->mousePosView))
+				{
+					//this->Player1.setPoints();
+					if (this->can_type[i] == canType::Beczkowe || this->can_type[i] == canType::Harnas || this->can_type[i] == canType::Kustosz)
+					{
+						this->Player1->setPoints(10);
+						std::cout << this->Player1->getPoints();
+					}
+					else
+					{
+						this->Player1->setPoints(-10);
+						std::cout << this->Player1->getPoints();
+					}
+
+
+					//Delete brick
+					deleted = true;
+					this->bricks.erase(this->bricks.begin() + i);
+				}
+			}
+		}
+	}
+	else
+	{
+		this->mouseHeld = false;
+	}
+
+}
+
+void Game::updateElapsedTime()
+{
+	if (this->startCountdown)
+	{
+		this->elapsedTime = clock.getElapsedTime().asSeconds();
+	}
+	if (this->elapsedTime >= this->Enemy1->getDrinkingSpeed())
+	{
+		this->your_turn = true;
+		this->is_collapsed = false;
+		this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
+		this->startCountdown = false;
+		this->status = Condition::Game1;
+	}
 }
 
 void Game::update2()
@@ -333,9 +592,11 @@ void Game::update2()
 
 	if (this->getEndGame() == false)
 	{
+		this->updateElapsedTime();
+
 		this->updateMousePositions();
 
-		Player1->update(*this->window);
+		this->updateBricks();
 
 		this->updateCan();
 	}
@@ -353,15 +614,13 @@ void Game::render2()
 
 	this->renderCan2(*this->window);
 
-	Player1->render(*this->window);
+	this->renderBricks(*this->window);
 
 	this->window->display();
 }
 
 void Game::start(Game _game)
 {
-	sf::Clock clock;
-	sf::Time elapsedTime;
 
 	while (_game.getWindowIsOpen() && !_game.getEndGame())
 	{
@@ -391,6 +650,10 @@ void Game::start(Game _game)
 
 
 //TODO
+//zliczanie punktów
+//ile picia zostało
+//zwiększanie jak szybko pijemy
+//druga minigra
 
 //Dlaczego wywala b³¹d przy delete Player i okna
 //Dlaczego ci¹gle dzia³a if z Gra1 w metodzie start

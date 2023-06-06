@@ -50,6 +50,7 @@ void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
 void Enemy::initializeVariables()
 {
 	//Intializes basics
+	this->drinkingSpeed = 10.f;
 }
 
 //Constructors and Destructors
@@ -62,6 +63,11 @@ Enemy::Enemy(sf::RenderTarget& window)
 Enemy::~Enemy()
 {
 	
+}
+
+float Enemy::getDrinkingSpeed()
+{
+	return this->drinkingSpeed;
 }
 
 //Public Functions
@@ -102,6 +108,7 @@ void Player::initializeVariables()
 	this->aimVelocity_x = 10.f;
 	this->aimVelocity_y = 8.f;
 	this->points = 0;
+	this->drinkingSpeed = 10.f;
 }
 
 
@@ -135,6 +142,21 @@ void Player::updateWindowBoundsCollision(sf::RenderTarget& window)
 	else if (this->getSprite().getGlobalBounds().top <= window.getSize().y * 0.3) {
 		aimVelocity_y = std::abs(aimVelocity_y);
 	}
+}
+
+void Player::setDrinkingSpeed(float _d)
+{
+	this->drinkingSpeed = this->drinkingSpeed + _d;
+}
+
+void Player::setPoints(float _p)
+{
+	this->points = this->points + _p;
+}
+
+float Player::getPoints()
+{
+	return this->points;
 }
 
 const sf::Sprite Player::getSprite() const

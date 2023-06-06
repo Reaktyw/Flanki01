@@ -10,14 +10,17 @@ private:
 	//Window
 	sf::RenderWindow* window;
 	sf::Event ev;
+	sf::Clock clock;
+	float elapsedTime;
 	sf::Texture textureBackground;
 	sf::Texture textureBackground2;
 	sf::Texture textureCan;
 	sf::Texture textureCan2;
-	sf::Vector2i mousePosWindow;
+	sf::Texture brickTexture[4];
+
 	Condition status;
 	SpriteType type;
-	canType can_type;
+	canType can_type[4];					//zrobiæ
 
 
 	//Game logic
@@ -26,7 +29,6 @@ private:
 	bool your_turn;
 	bool is_collapsed;
 	bool render_once;
-	sf::Time elapsedTime;
 
 
 	//Game objects
@@ -39,9 +41,38 @@ private:
 
 	//Private Functions
 	void setTexture(std::string _s, SpriteType _spriteType);
-	void initializeVariables();		//Podstawowe inicjalizowanie
+	void initializeVariables();				//Podstawowe inicjalizowanie
 	void initializeWindow();
 	void setBackground(std::string _s);
+
+
+	/////////Game2////////////
+	//Mouse positions
+	sf::Vector2i mousePosWindow;
+	sf::Vector2f mousePosView;
+
+	//Resources
+	sf::Font font;
+
+	//Text
+	sf::Text uiText;
+
+	//Game logic
+	bool endGame2;
+	float brickSpawnTimer;
+	float brickSpawnTimerMax;
+	int maxBricks;
+	bool mouseHeld;
+	bool startCountdown;
+
+	//Game objects
+	std::vector<sf::Sprite> bricks;
+	sf::Sprite brick;
+
+
+	//Private methods
+	void initializeFont();
+	void initializeText();
 
 
 public:
@@ -63,7 +94,6 @@ public:
 
 	void pollEvents();
 	void enemyTurn();
-	void updateMousePositions();			//zrobiæ klikanie podczas picia mo¿e w Player
 	void updateCan();
 	void update();
 	//
@@ -72,9 +102,21 @@ public:
 	void render();
 
 	///////////////Game2//////////////
+	void spawnBrick();
+	void updateMousePositions();
+	void updateText();
+
+	void renderText(sf::RenderTarget& target);
+	void renderBricks(sf::RenderTarget& target);
 
 	void setCan2(std::string _s);
+	void setTextureBrick(std::string _s, canType _can_type);
+	void setBrick(std::string _s, canType _can_type);
 
+	canType getCan();
+
+	void updateBricks();
+	void updateElapsedTime();
 	void update2();
 
 	void renderCan2(sf::RenderTarget& target);
