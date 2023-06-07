@@ -4,6 +4,21 @@
 //////////////////////////////////////////Contestant//////////////////////////////////
 
 
+float Contestant::getDrinkingSpeed()
+{
+	return this->drinkingSpeed;
+}
+
+void Contestant::setPoints(float _p)
+{
+	this->points = this->points + _p;
+}
+
+float Contestant::getPoints()
+{
+	return this->points;
+}
+
 void Contestant::setTexture(sf::RenderTarget& window, std::string _s)
 {
 	try
@@ -29,12 +44,23 @@ const sf::Sprite Contestant::getSprite() const
 	return sprite;
 }
 
+sf::Vector2f Contestant::getMovementSpeed()
+{
+	return this->movement_speed;
+}
+
+void Contestant::setCanEmptiness(float _elapsed)
+{
+	this->canEmptiness = this->canEmptiness - _elapsed;
+}
+
 
 
 
 ///////////////////////////////////////////Enemy/////////////////////////////////////////////
 
 //Private Functions
+
 
 void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
 {
@@ -63,11 +89,6 @@ Enemy::Enemy(sf::RenderTarget& window)
 Enemy::~Enemy()
 {
 	
-}
-
-float Enemy::getDrinkingSpeed()
-{
-	return this->drinkingSpeed;
 }
 
 //Public Functions
@@ -149,15 +170,6 @@ void Player::setDrinkingSpeed(float _d)
 	this->drinkingSpeed = this->drinkingSpeed + _d;
 }
 
-void Player::setPoints(float _p)
-{
-	this->points = this->points + _p;
-}
-
-float Player::getPoints()
-{
-	return this->points;
-}
 
 const sf::Sprite Player::getSprite() const
 {

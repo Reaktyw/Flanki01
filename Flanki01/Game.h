@@ -13,7 +13,6 @@ private:
 	sf::Clock clock;
 	float elapsedTime;
 	sf::Texture textureBackground;
-	sf::Texture textureBackground2;
 	sf::Texture textureCan;
 	sf::Texture textureCan2;
 	sf::Texture brickTexture[4];
@@ -25,7 +24,6 @@ private:
 
 	//Game logic
 	bool endGame;
-	float canEmptiness;						//zrobiæ
 	bool your_turn;
 	bool is_collapsed;
 	bool render_once;
@@ -35,7 +33,6 @@ private:
 	sf::Sprite can;
 	sf::Sprite can2;
 	sf::Sprite background;
-	sf::Sprite background2;
 	Contestant* Enemy1;
 	Contestant* Player1;
 
@@ -74,6 +71,8 @@ private:
 	void initializeFont();
 	void initializeText();
 
+	//////////////////////Game3////////////////
+	bool enemy_has_rock;
 
 public:
 	//Constructors and Destructors
@@ -91,6 +90,7 @@ public:
 
 	///////////////Game1///////////////
 	void setCan(std::string _s, canType _cantype);
+	void renderText(sf::RenderTarget& target);
 
 	void pollEvents();
 	void enemyTurn();
@@ -106,7 +106,6 @@ public:
 	void updateMousePositions();
 	void updateText();
 
-	void renderText(sf::RenderTarget& target);
 	void renderBricks(sf::RenderTarget& target);
 
 	void setCan2(std::string _s);
@@ -121,6 +120,14 @@ public:
 
 	void renderCan2(sf::RenderTarget& target);
 	void render2();
+
+
+	/////////////////Game3///////////////////
+	void updateEnemyTurn();
+
+	void update3();
+
+	void render3();
 
 
 	void start(Game _game);

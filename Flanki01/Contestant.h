@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 using namespace System;
 using namespace System::ComponentModel;
@@ -14,7 +15,7 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 enum class Condition {
-	Game1, Game2
+	Game1, Game2, Game3
 };
 
 enum class SpriteType {
@@ -36,6 +37,9 @@ protected:
 	sf::Sprite sprite;
 	float drinkingSpeed;
 	float points;
+	sf::Vector2f movement_speed;
+
+	float canEmptiness;						//zrobiæ
 
 	virtual void initializeVariables() = 0;
 
@@ -44,12 +48,15 @@ public:
 	virtual ~Contestant() {};
 
 	virtual void setDrinkingSpeed(float _d) = 0;
-	virtual float getDrinkingSpeed() = 0;
-	virtual void setPoints(float _p) = 0;
-	virtual float getPoints() = 0;
+	float getDrinkingSpeed();
+	void setPoints(float _p);
+	float getPoints();
 	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
 	void setTexture(sf::RenderTarget& window, std::string _s);
 	const sf::Sprite getSprite() const;
+	sf::Vector2f getMovementSpeed();
+
+	void setCanEmptiness(float _elapsed);
 
 	virtual void update(sf::RenderTarget& window) = 0;
 	virtual void render(sf::RenderTarget& window) = 0;
@@ -69,9 +76,6 @@ public:
 	~Enemy();
 
 	void setDrinkingSpeed(float _d) {};
-	float getDrinkingSpeed();
-	void setPoints(float _d) {};
-	float getPoints() { return this->points; };
 
 	void setSprite(sf::RenderTarget& window, std::string _s);
 
@@ -98,9 +102,6 @@ public:
 	void updateWindowBoundsCollision(sf::RenderTarget& window);
 
 	void setDrinkingSpeed(float _d);
-	float getDrinkingSpeed() { return this->drinkingSpeed; };
-	void setPoints(float _d);
-	float getPoints();
 
 	const sf::Sprite getSprite() const;
 
