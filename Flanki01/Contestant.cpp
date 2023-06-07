@@ -113,7 +113,7 @@ void Enemy::render(sf::RenderTarget& window)
 void Player::setSprite(sf::RenderTarget& window, std::string _s)
 {
 	//Loads basic texture and sprite (For now. We will change it to load given texture)
-	//Próbowa³em, ¿eby wszystko ³adowa³o siê w jedn¹ teksturê i jednego sprita, zobaczê jak to dzia³a i czy dzia³a
+	//PrÃ³bowaÂ³em, Â¿eby wszystko Â³adowaÂ³o siÃª w jednÂ¹ teksturÃª i jednego sprita, zobaczÃª jak to dziaÂ³a i czy dziaÂ³a
 
 	this->setTexture(window, _s);
 	this->sprite.setScale(0.5f, 0.5f);
@@ -147,7 +147,10 @@ Player::~Player()
 {
 
 }
-
+float Player::getDrinkingSpeed()
+{
+	return this->drinkingSpeed;
+}
 
 void Player::updateWindowBoundsCollision(sf::RenderTarget& window)
 {

@@ -102,6 +102,9 @@ public:
 	void updateWindowBoundsCollision(sf::RenderTarget& window);
 
 	void setDrinkingSpeed(float _d);
+	float getDrinkingSpeed();
+	void setPoints(float _d);
+	float getPoints();
 
 	const sf::Sprite getSprite() const;
 
