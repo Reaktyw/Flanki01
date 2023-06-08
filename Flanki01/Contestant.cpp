@@ -213,19 +213,55 @@ Player::~Player()
 
 }
 
-void Player::updateWindowBoundsCollision(sf::RenderTarget& window)
+void Player::updateWindowBoundsCollision(sf::RenderTarget& window, std::string _s)
 {
-	if (this->getSprite().getGlobalBounds().left + this->getSprite().getGlobalBounds().width >= window.getSize().x * 0.75) {
-		aimVelocity_x = -std::abs(aimVelocity_x);
+	if (_s == "small")
+	{
+		if (this->getSprite().getGlobalBounds().left + this->getSprite().getGlobalBounds().width >= window.getSize().x * 0.75) {
+			aimVelocity_x = -std::abs(aimVelocity_x);
+		}
+		else if (this->getSprite().getGlobalBounds().left <= window.getSize().x * 0.25) {
+			aimVelocity_x = std::abs(aimVelocity_x);
+		}
+		if (this->getSprite().getGlobalBounds().top + this->getSprite().getGlobalBounds().height >= window.getSize().y * 0.9) {
+			aimVelocity_y = -std::abs(aimVelocity_y);
+		}
+		else if (this->getSprite().getGlobalBounds().top <= window.getSize().y * 0.3) {
+			aimVelocity_y = std::abs(aimVelocity_y);
+		}
 	}
-	else if (this->getSprite().getGlobalBounds().left <= window.getSize().x * 0.25) {
-		aimVelocity_x = std::abs(aimVelocity_x);
+	else if(_s == "big")
+	{
+		if (this->sprite2.getGlobalBounds().left <= 0.f)
+			this->sprite2.setPosition(0.f, this->sprite2.getGlobalBounds().top);
+		if (this->sprite2.getGlobalBounds().left + this->sprite2.getGlobalBounds().width >= window.getSize().x)
+			this->sprite2.setPosition(window.getSize().x - this->sprite2.getGlobalBounds().width, this->sprite2.getGlobalBounds().top);
+
+		if (this->sprite2.getGlobalBounds().top <= 0.f)
+			this->sprite2.setPosition(this->sprite2.getGlobalBounds().left, 0.f);
+		if (this->sprite2.getGlobalBounds().top + this->sprite2.getGlobalBounds().height >= window.getSize().y)
+			this->sprite2.setPosition(this->sprite2.getGlobalBounds().left, window.getSize().y - this->sprite2.getGlobalBounds().height);
 	}
-	if (this->getSprite().getGlobalBounds().top + this->getSprite().getGlobalBounds().height >= window.getSize().y * 0.9) {
-		aimVelocity_y = -std::abs(aimVelocity_y);
+
+}
+
+void Player::updateMovement(sf::RenderTarget& window)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		this->sprite2.move(-this->movement_speed_x, 0.f);
 	}
-	else if (this->getSprite().getGlobalBounds().top <= window.getSize().y * 0.3) {
-		aimVelocity_y = std::abs(aimVelocity_y);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		this->sprite2.move(this->movement_speed_x, 0.f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		this->sprite2.move(0.f, -this->movement_speed_y);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		this->sprite2.move(0.f, this->movement_speed_y);
 	}
 }
 
@@ -235,23 +271,15 @@ void Player::setDrinkingSpeed(float _d)
 }
 
 
-const sf::Sprite Player::getSprite() const
-{
-	return this->sprite;
-}
-
-
 //Public Functions
 void Player::update(sf::RenderTarget& window)
 {
-	this->updateWindowBoundsCollision(window);
+	this->updateWindowBoundsCollision(window, "small");
 	this->sprite.move(aimVelocity_x, aimVelocity_y);
 }
 
 void Player::update2(sf::RenderTarget& window)
 {
-
+	this->updateMovement(window);
+	this->updateWindowBoundsCollision(window, "big");
 }
-
-
-

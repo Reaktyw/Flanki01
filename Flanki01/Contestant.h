@@ -109,12 +109,10 @@ public:
 
 	void setSprite(sf::RenderTarget& window, std::string _s);
 	void setSprite2(sf::RenderTarget& window, std::string _s);
-	void updateWindowBoundsCollision(sf::RenderTarget& window);
+	void updateWindowBoundsCollision(sf::RenderTarget& window, std::string _s);
+	void updateMovement(sf::RenderTarget& window);
 
 	void setDrinkingSpeed(float _d);
-	float getDrinkingSpeed();
-
-	const sf::Sprite getSprite() const;
 
 	void update(sf::RenderTarget& window);
 	void update2(sf::RenderTarget& window);

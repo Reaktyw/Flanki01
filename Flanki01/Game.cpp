@@ -205,7 +205,7 @@ void Game::pollEvents()
 		case sf::Event::MouseButtonPressed:
 		{
 			//Our turn
-			if (this->ev.key.code == sf::Mouse::Left && your_turn == true)
+			if (this->ev.key.code == sf::Mouse::Left && your_turn == true && this->status == Condition::Game1)
 			{
 				this->your_turn = false;
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()))
@@ -307,6 +307,20 @@ void Game::updateCan()
 	else if (!is_collapsed)
 	{
 		this->can.setRotation(0);
+		this->can.setPosition(
+			(this->window->getSize().x) * 0.55f,
+			(this->window->getSize().y) * 0.65f
+		);
+	}
+	if (this->can.getGlobalBounds().intersects(this->Player1->getSprite2().getGlobalBounds()))
+	{
+		this->your_turn = true;
+		this->is_collapsed = false;
+		this->startCountdown = false;
+		this->setBackground("images/Plansza1.png");
+		this->status = Condition::Game1;
+		this->clock.restart();
+		this->startCountdown;
 	}
 }
 
@@ -756,10 +770,10 @@ void Game::render3()
 
 void Game::start(Game _game)
 {
+	srand(time(NULL));
 
 	while (_game.getWindowIsOpen() && !_game.getEndGame())
 	{
-
 		if (this->getCondition() == Condition::Game1)
 		{
 			//Update
