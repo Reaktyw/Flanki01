@@ -19,7 +19,7 @@ float Contestant::getPoints()
 	return this->points;
 }
 
-void Contestant::setTexture(sf::RenderTarget& window, std::string _s)
+void Contestant::setTexture(std::string _s)
 {
 	try
 	{
@@ -39,19 +39,59 @@ void Contestant::setTexture(sf::RenderTarget& window, std::string _s)
 	}
 }
 
+void Contestant::setTexture2(std::string _s)
+{
+	try
+	{
+		if (this->texture2.loadFromFile(_s))
+		{
+			this->sprite2.setTexture(texture2);
+		}
+		else
+		{
+			throw(1);
+		}
+	}
+	catch (Exception^ ex)
+	{
+		MessageBox::Show(ex->Message);
+		std::cout << "Nie zaladowano celownika \n";
+	}
+}
+
 const sf::Sprite Contestant::getSprite() const
 {
 	return sprite;
 }
 
-sf::Vector2f Contestant::getMovementSpeed()
+const sf::Sprite Contestant::getSprite2() const
 {
-	return this->movement_speed;
+	return sprite2;
+}
+
+float Contestant::getMovementSpeed_x()
+{
+	return this->movement_speed_x;
+}
+
+float Contestant::getMovementSpeed_y()
+{
+	return this->movement_speed_y;
 }
 
 void Contestant::setCanEmptiness(float _elapsed)
 {
 	this->canEmptiness = this->canEmptiness - _elapsed;
+}
+
+void Contestant::render(sf::RenderTarget& window)
+{
+	window.draw(this->sprite);
+}
+
+void Contestant::render2(sf::RenderTarget& window)
+{
+	window.draw(this->sprite2);
 }
 
 
@@ -65,7 +105,17 @@ void Contestant::setCanEmptiness(float _elapsed)
 void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
 {
 	//Loads basic texture and sprite
-	this->setTexture(window, _s);
+	this->setTexture(_s);
+	this->sprite.setScale(0.5f, 0.5f);
+	this->sprite.setPosition(
+		static_cast<float>(static_cast<int>(window.getSize().x - this->texture.getSize().x) * 0.625f),
+		static_cast<float>(static_cast<int>(window.getSize().y - this->texture.getSize().y) * 0.667f)
+	);
+}
+
+void Enemy::setSprite2(sf::RenderTarget& window, std::string _s)
+{
+	this->setTexture(_s);
 	this->sprite.setScale(0.5f, 0.5f);
 	this->sprite.setPosition(
 		static_cast<float>(static_cast<int>(window.getSize().x - this->texture.getSize().x) * 0.625f),
@@ -77,6 +127,8 @@ void Enemy::initializeVariables()
 {
 	//Intializes basics
 	this->drinkingSpeed = 10.f;
+	this->movement_speed_x = 10.f;
+	this->movement_speed_y = 10.f;
 }
 
 //Constructors and Destructors
@@ -97,9 +149,9 @@ void Enemy::update(sf::RenderTarget& window)
 	
 }
 
-void Enemy::render(sf::RenderTarget& window)
+void Enemy::update2(sf::RenderTarget& window)
 {
-	window.draw(this->sprite);
+
 }
 
 
@@ -115,11 +167,21 @@ void Player::setSprite(sf::RenderTarget& window, std::string _s)
 	//Loads basic texture and sprite (For now. We will change it to load given texture)
 	//Próbowa³em, ¿eby wszystko ³adowa³o siê w jedn¹ teksturê i jednego sprita, zobaczê jak to dzia³a i czy dzia³a
 
-	this->setTexture(window, _s);
+	this->setTexture(_s);
 	this->sprite.setScale(0.5f, 0.5f);
 	this->sprite.setPosition(
 		static_cast<float>(static_cast<int>(window.getSize().x) * 0.5f),
 		static_cast<float>(static_cast<int>(window.getSize().y) * 0.5f)
+	);
+}
+
+void Player::setSprite2(sf::RenderTarget& window, std::string _s)
+{
+	this->setTexture2(_s);
+	this->sprite2.setScale(0.5f, 0.5f);
+	this->sprite2.setPosition(
+		static_cast<float>(rand() % static_cast<int>(window.getSize().x - this->sprite2.getGlobalBounds().width)),
+		static_cast<float>(rand() % static_cast<int>(window.getSize().y - this->sprite2.getGlobalBounds().height))
 	);
 }
 
@@ -130,6 +192,8 @@ void Player::initializeVariables()
 	this->aimVelocity_y = 8.f;
 	this->points = 0;
 	this->drinkingSpeed = 10.f;
+	this->movement_speed_x = 10.f;
+	this->movement_speed_y = 10.f;
 }
 
 
@@ -139,6 +203,7 @@ void Player::initializeVariables()
 Player::Player(sf::RenderTarget& window)
 {
 	this->setSprite(window, "images/celownik3.png");
+	this->setSprite2(window, "images/player.png");
 	this->initializeVariables();
 
 }
@@ -146,10 +211,6 @@ Player::Player(sf::RenderTarget& window)
 Player::~Player()
 {
 
-}
-float Player::getDrinkingSpeed()
-{
-	return this->drinkingSpeed;
 }
 
 void Player::updateWindowBoundsCollision(sf::RenderTarget& window)
@@ -187,9 +248,10 @@ void Player::update(sf::RenderTarget& window)
 	this->sprite.move(aimVelocity_x, aimVelocity_y);
 }
 
-void Player::render(sf::RenderTarget& window)
+void Player::update2(sf::RenderTarget& window)
 {
-	window.draw(this->sprite);
+
 }
+
 
 

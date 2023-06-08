@@ -1,3 +1,7 @@
-﻿  Game.cpp
+﻿  Contestant.cpp
+  Game.cpp
+  MyForm1.cpp
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\MyForm1.cpp(10,15): warning C4551: function call missing argument list
+  Generating Code...
   Contestant.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Flanki01.vcxproj -> C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\x64\Release\Flanki01.exe

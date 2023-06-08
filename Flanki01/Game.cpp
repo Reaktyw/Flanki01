@@ -87,10 +87,6 @@ void Game::initializeVariables()
 	this->brickSpawnTimer = this->brickSpawnTimerMax;
 	this->mouseHeld = false;
 	this->maxBricks = 10;
-	this->can_type[0] = canType::Beczkowe;
-	this->can_type[1] = canType::Zubr;
-	this->can_type[2] = canType::Harnas;
-	this->can_type[3] = canType::Kustosz;
 }
 
 void Game::initializeWindow()
@@ -215,19 +211,21 @@ void Game::pollEvents()
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()))
 				{
 					int x = rand() % 2;
-					if (x == 2)
+					if (x == 1)
 					{
 						this->clock.restart();
 						this->is_collapsed = true;
 						this->startCountdown = true;
 						this->Enemy1->setSprite(*this->window, "images/pusty1.png");
+						std::cout << "Trafiles " << std::endl;
 						this->status = Condition::Game2;
 					}
 					else if (x != 1)
 					{
-						//this->clock.restart();
-						//this->startCountdown = true;
-						////Enemy turn
+						std::cout << "Nie trafiles " << std::endl;
+						this->clock.restart();
+						this->startCountdown = true;
+						//Enemy turn
 						//int j = rand() % 1;
 						//if (j != 1)
 						//{
@@ -242,6 +240,10 @@ void Game::pollEvents()
 						//	std::cout << "Pudzian nie trafil " << std::endl;
 						//}
 					}
+				}
+				else
+				{
+					std::cout << "Nie trafiles " << std::endl;
 				}
 				this->clock.restart();
 				this->startCountdown = true;
@@ -392,15 +394,19 @@ void Game::spawnBrick()
 	{
 	case 0:
 		this->setBrick("images/beczkowe_wisnia.png", canType::Beczkowe);
+		this->can_type.emplace_back(canType::Beczkowe);
 		break;
 	case 1:
 		this->setBrick("images/zubr.png", canType::Zubr);
+		this->can_type.emplace_back(canType::Zubr);
 		break;
 	case 2:
 		this->setBrick("images/harnas.png", canType::Harnas);
+		this->can_type.emplace_back(canType::Harnas);
 		break;
 	case 3:
 		this->setBrick("images/kustosz.png", canType::Kustosz);
+		this->can_type.emplace_back(canType::Kustosz);
 		break;
 	}
 
@@ -534,12 +540,6 @@ void Game::setBrick(std::string _s, canType _can_type)
 	}
 }
 
-canType Game::getCan()
-{
-	return *this->can_type;
-}
-
-
 void Game::renderCan2(sf::RenderTarget& target)
 {
 	target.draw(this->can2);
@@ -570,13 +570,14 @@ void Game::updateBricks()
 		if (this->bricks[i].getPosition().y > this->window->getSize().y)
 		{
 			this->bricks.erase(this->bricks.begin() + i);
+			this->can_type.erase(this->can_type.begin() + i);
 			this->Player1->setDrinkingSpeed(-1);
 		}
 
 
 	}
-	//Check if clicked
 
+	//Check if clicked
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		if (this->mouseHeld == false)
@@ -593,11 +594,13 @@ void Game::updateBricks()
 					if (this->can_type[i] == canType::Beczkowe || this->can_type[i] == canType::Harnas || this->can_type[i] == canType::Kustosz)
 					{
 						this->Player1->setPoints(10);
+						this->Player1->setDrinkingSpeed(1);
 						std::cout << this->Player1->getPoints();
 					}
 					else
 					{
 						this->Player1->setPoints(-10);
+						this->Player1->setDrinkingSpeed(-1);
 						std::cout << this->Player1->getPoints();
 					}
 
@@ -605,6 +608,7 @@ void Game::updateBricks()
 					//Delete brick
 					deleted = true;
 					this->bricks.erase(this->bricks.begin() + i);
+					this->can_type.erase(this->can_type.begin() + i);
 				}
 			}
 		}
@@ -622,12 +626,12 @@ void Game::updateElapsedTime()
 	{
 		this->elapsedTime = clock.getElapsedTime().asSeconds();
 	}
-	if (this->elapsedTime >= this->Enemy1->getDrinkingSpeed())
+	if (this->elapsedTime >= this->Enemy1->getMovementSpeed_x())
 	{
-		this->your_turn = true;
+		//this->your_turn = true;
 		this->is_collapsed = false;
 		this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
-		this->startCountdown = false;
+		this->clock.restart();
 		this->status = Condition::Game1;
 	}
 }
@@ -701,6 +705,8 @@ void Game::updateEnemyTurn()
 				static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->brick.getGlobalBounds().height))
 			);
 
+			this->Player1->setSprite2(*this->window, "images/player.png");
+
 			this->status = Condition::Game3;
 		}
 		else if (j == 0)
@@ -724,6 +730,8 @@ void Game::update3()
 		this->updateText();
 
 		this->updateCan();
+
+		Player1->update2(*this->window);
 	}
 }
 
@@ -734,6 +742,8 @@ void Game::render3()
 	this->renderBackground(*this->window);
 
 	this->renderCan(*this->window);
+
+	Player1->render2(*this->window);
 
 	this->renderText(*this->window);
 

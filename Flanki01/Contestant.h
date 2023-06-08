@@ -34,10 +34,13 @@ private:
 
 protected:
 	sf::Texture texture;
+	sf::Texture texture2;
 	sf::Sprite sprite;
+	sf::Sprite sprite2;
 	float drinkingSpeed;
 	float points;
-	sf::Vector2f movement_speed;
+	float movement_speed_x;					//float ¿eby mo¿na by³o do enemy przypisaæ wartoœæ ³atwo w updateElapsed
+	float movement_speed_y;
 
 	float canEmptiness;						//zrobiæ
 
@@ -52,14 +55,20 @@ public:
 	void setPoints(float _p);
 	float getPoints();
 	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
-	void setTexture(sf::RenderTarget& window, std::string _s);
+	virtual void setSprite2(sf::RenderTarget& window, std::string _s) = 0;
+	void setTexture(std::string _s);
+	void setTexture2(std::string _s);
 	const sf::Sprite getSprite() const;
-	sf::Vector2f getMovementSpeed();
+	const sf::Sprite getSprite2() const;
+	float getMovementSpeed_x();
+	float getMovementSpeed_y();
 
 	void setCanEmptiness(float _elapsed);
 
 	virtual void update(sf::RenderTarget& window) = 0;
-	virtual void render(sf::RenderTarget& window) = 0;
+	virtual void update2(sf::RenderTarget& window) = 0;
+	void render(sf::RenderTarget& window);
+	void render2(sf::RenderTarget& window);
 
 };
 
@@ -78,9 +87,10 @@ public:
 	void setDrinkingSpeed(float _d) {};
 
 	void setSprite(sf::RenderTarget& window, std::string _s);
+	void setSprite2(sf::RenderTarget& window, std::string _s);
 
 	void update(sf::RenderTarget& window);
-	void render(sf::RenderTarget& window);
+	void update2(sf::RenderTarget& window);
 };
 
 
@@ -90,7 +100,6 @@ class Player : public Contestant
 private:
 	float aimVelocity_x;
 	float aimVelocity_y;
-	float drinkingSpeed;
 
 	void initializeVariables();
 
@@ -99,16 +108,14 @@ public:
 	~Player();
 
 	void setSprite(sf::RenderTarget& window, std::string _s);
+	void setSprite2(sf::RenderTarget& window, std::string _s);
 	void updateWindowBoundsCollision(sf::RenderTarget& window);
 
 	void setDrinkingSpeed(float _d);
 	float getDrinkingSpeed();
-	void setPoints(float _d);
-	float getPoints();
 
 	const sf::Sprite getSprite() const;
 
 	void update(sf::RenderTarget& window);
-	void render(sf::RenderTarget& window);
-
+	void update2(sf::RenderTarget& window);
 };

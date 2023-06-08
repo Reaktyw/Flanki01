@@ -19,7 +19,7 @@ private:
 
 	Condition status;
 	SpriteType type;
-	canType can_type[4];					//zrobiæ
+	std::vector<canType> can_type;					//zrobiæ
 
 
 	//Game logic
@@ -111,8 +111,6 @@ public:
 	void setCan2(std::string _s);
 	void setTextureBrick(std::string _s, canType _can_type);
 	void setBrick(std::string _s, canType _can_type);
-
-	canType getCan();
 
 	void updateBricks();
 	void updateElapsedTime();
