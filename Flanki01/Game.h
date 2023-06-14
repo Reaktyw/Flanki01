@@ -16,15 +16,16 @@ private:
 	sf::Texture textureCan;
 	sf::Texture textureCan2;
 	sf::Texture brickTexture[4];
+	std::string which_ture;
 
 	Condition status;
 	SpriteType type;
-	std::vector<canType> can_type;					//zrobiæ
+	std::vector<canType> can_type;
 
 
 	//Game logic
 	bool endGame;
-	bool your_turn;
+	bool your_ture;
 	bool is_collapsed;
 	bool render_once;
 
@@ -39,7 +40,6 @@ private:
 	//Private Functions
 	void setTexture(std::string _s, SpriteType _spriteType);
 	void initializeVariables();				//Podstawowe inicjalizowanie
-	void initializeWindow();
 	void setBackground(std::string _s);
 
 
@@ -78,6 +78,7 @@ public:
 	//Constructors and Destructors
 	Game();
 	virtual ~Game();
+	void initializeWindow();
 
 	//Accessors (akcesoria)
 	const bool getWindowIsOpen() const;
@@ -86,14 +87,12 @@ public:
 	const Condition getCondition() const;
 
 	//Public Functions
-	//void spawnCan();
 
 	///////////////Game1///////////////
 	void setCan(std::string _s, canType _cantype);
 	void renderText(sf::RenderTarget& target);
 
 	void pollEvents();
-	void enemyTurn();
 	void updateCan();
 	void update();
 	//
@@ -127,6 +126,10 @@ public:
 
 	void render3();
 
+	////////////////EndScreen////////////////
+	void update4();
+
+	void render4();
 
 	void start(Game _game);
 };

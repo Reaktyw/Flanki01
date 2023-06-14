@@ -4,6 +4,11 @@
 //////////////////////////////////////////Contestant//////////////////////////////////
 
 
+void Contestant::setDrinkingSpeed(float _d)
+{
+	this->drinkingSpeed = this->drinkingSpeed + _d;
+}
+
 float Contestant::getDrinkingSpeed()
 {
 	return this->drinkingSpeed;
@@ -61,12 +66,12 @@ void Contestant::setTexture2(std::string _s)
 
 const sf::Sprite Contestant::getSprite() const
 {
-	return sprite;
+	return this->sprite;
 }
 
 const sf::Sprite Contestant::getSprite2() const
 {
-	return sprite2;
+	return this->sprite2;
 }
 
 float Contestant::getMovementSpeed_x()
@@ -79,9 +84,9 @@ float Contestant::getMovementSpeed_y()
 	return this->movement_speed_y;
 }
 
-void Contestant::setCanEmptiness(float _elapsed)
+float Contestant::getCanEmptiness()
 {
-	this->canEmptiness = this->canEmptiness - _elapsed;
+	return this->canEmptiness;
 }
 
 void Contestant::render(sf::RenderTarget& window)
@@ -101,16 +106,37 @@ void Contestant::render2(sf::RenderTarget& window)
 
 //Private Functions
 
-
-void Enemy::setSprite(sf::RenderTarget& window, std::string _s)
+void Enemy::setSprite(sf::RenderTarget& window, std::string _s, std::string end)
 {
 	//Loads basic texture and sprite
-	this->setTexture(_s);
-	this->sprite.setScale(0.5f, 0.5f);
-	this->sprite.setPosition(
-		static_cast<float>(static_cast<int>(window.getSize().x - this->texture.getSize().x) * 0.625f),
-		static_cast<float>(static_cast<int>(window.getSize().y - this->texture.getSize().y) * 0.667f)
-	);
+	if (end == "n")
+	{
+		this->setTexture(_s);
+		this->sprite.setScale(0.4f, 0.4f);
+		this->sprite.setPosition(
+			static_cast<float>(static_cast<int>(window.getSize().x) * 0.55f),
+			static_cast<float>(static_cast<int>(window.getSize().y) * 0.35f)
+		);
+	}
+	else if (end == "y1")
+	{
+		this->setTexture(_s);
+		this->sprite.setScale(1.f, 1.f);
+		this->sprite.setPosition(
+			0.f, 
+			static_cast<float>(static_cast<int>(window.getSize().y - this->sprite.getGlobalBounds().height))
+		);
+	}
+	else if (end == "y2")
+	{
+		this->setTexture(_s);
+		this->sprite.setScale(1.5f, 1.5f);
+		this->sprite.setPosition(
+			0.f,
+			static_cast<float>(static_cast<int>(window.getSize().y) * 0.5f)
+		);
+	}
+
 }
 
 void Enemy::setSprite2(sf::RenderTarget& window, std::string _s)
@@ -123,10 +149,16 @@ void Enemy::setSprite2(sf::RenderTarget& window, std::string _s)
 	);
 }
 
+void Enemy::setCanEmptiness(float _elapsed)
+{
+	this->canEmptiness -= _elapsed;
+	std::cout << "Enemy can emptiness " << this->canEmptiness << std::endl;
+}
+
 void Enemy::initializeVariables()
 {
 	//Intializes basics
-	this->drinkingSpeed = 10.f;
+	this->canEmptiness = 100.f;
 	this->movement_speed_x = 10.f;
 	this->movement_speed_y = 10.f;
 }
@@ -134,7 +166,8 @@ void Enemy::initializeVariables()
 //Constructors and Destructors
 Enemy::Enemy(sf::RenderTarget& window)
 {
-	this->setSprite(window, "images/Pudzian_przeciwnik.png");
+	this->setSprite(window, "images/Pudzian_gratulacje.png", "n");
+	this->setSprite(window, "images/Pudzian_przeciwnik.png", "n");
 	this->initializeVariables();	
 }
 
@@ -162,11 +195,9 @@ void Enemy::update2(sf::RenderTarget& window)
 //Private Functions
 
 
-void Player::setSprite(sf::RenderTarget& window, std::string _s)
+void Player::setSprite(sf::RenderTarget& window, std::string _s, std::string end)
 {
 	//Loads basic texture and sprite (For now. We will change it to load given texture)
-	//Próbowa³em, ¿eby wszystko ³adowa³o siê w jedn¹ teksturê i jednego sprita, zobaczê jak to dzia³a i czy dzia³a
-
 	this->setTexture(_s);
 	this->sprite.setScale(0.5f, 0.5f);
 	this->sprite.setPosition(
@@ -185,32 +216,40 @@ void Player::setSprite2(sf::RenderTarget& window, std::string _s)
 	);
 }
 
+void Player::setCanEmptiness(float _elapsed)
+{
+	if (this->drinkingSpeed > 0)
+	{
+		this->canEmptiness -= this->drinkingSpeed;
+	}
+	std::cout << "Player can emptiness " << this->canEmptiness << std::endl;
+}
+
 void Player::initializeVariables()
 {
 	//Intializes basics
-	this->aimVelocity_x = 10.f;
-	this->aimVelocity_y = 8.f;
+	this->canEmptiness = 100.f;
+	this->aimVelocity_x = 20.f;
+	this->aimVelocity_y = 7.f;
 	this->points = 0;
-	this->drinkingSpeed = 10.f;
+	this->drinkingSpeed = 0.1f;														//zmieni�
 	this->movement_speed_x = 10.f;
 	this->movement_speed_y = 10.f;
 }
 
 
 
-
 //Constructors and Destructors
 Player::Player(sf::RenderTarget& window)
 {
-	this->setSprite(window, "images/celownik3.png");
-	this->setSprite2(window, "images/player.png");
+	this->setSprite(window, "images/celownik3.png", "y1");
+	this->setSprite2(window, "images/spejson.png");
 	this->initializeVariables();
-
 }
 
 Player::~Player()
 {
-
+	
 }
 
 void Player::updateWindowBoundsCollision(sf::RenderTarget& window, std::string _s)
@@ -263,11 +302,6 @@ void Player::updateMovement(sf::RenderTarget& window)
 	{
 		this->sprite2.move(0.f, this->movement_speed_y);
 	}
-}
-
-void Player::setDrinkingSpeed(float _d)
-{
-	this->drinkingSpeed = this->drinkingSpeed + _d;
 }
 
 

@@ -77,8 +77,9 @@ void Game::initializeVariables()
 	//Game logic
 	this->endGame = false;
 	this->is_collapsed = false;
-	this->your_turn = true;
+	this->your_ture = true;
 	this->render_once = true;
+	this->which_ture = "Your ture";
 
 	this->startCountdown = false;
 	this->enemy_has_rock = false;
@@ -92,7 +93,6 @@ void Game::initializeVariables()
 void Game::initializeWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode::getDesktopMode(), "Game 1", sf::Style::Fullscreen);
-
 	this->window->setFramerateLimit(40);
 }
 
@@ -204,10 +204,11 @@ void Game::pollEvents()
 			}
 		case sf::Event::MouseButtonPressed:
 		{
-			//Our turn
-			if (this->ev.key.code == sf::Mouse::Left && your_turn == true && this->status == Condition::Game1)
+
+			if (this->ev.key.code == sf::Mouse::Left && this->your_ture == true && this->status == Condition::Game1)
 			{
-				this->your_turn = false;
+				//Our turn
+				this->your_ture = false;
 				if (this->can.getGlobalBounds().intersects(this->Player1->getSprite().getGlobalBounds()))
 				{
 					int x = rand() % 2;
@@ -216,62 +217,34 @@ void Game::pollEvents()
 						this->clock.restart();
 						this->is_collapsed = true;
 						this->startCountdown = true;
-						this->Enemy1->setSprite(*this->window, "images/pusty1.png");
-						std::cout << "Trafiles " << std::endl;
+						this->Enemy1->setSprite(*this->window, "images/pusty1.png", "n");
 						this->status = Condition::Game2;
 					}
 					else if (x != 1)
 					{
-						std::cout << "Nie trafiles " << std::endl;
+						this->which_ture = "Enemy ture";
 						this->clock.restart();
 						this->startCountdown = true;
-						//Enemy turn
-						//int j = rand() % 1;
-						//if (j != 1)
-						//{
-						//	std::cout << "Pudzian trafil " << std::endl;
-						//	this->is_collapsed = true;
-						//	this->setBackground("images/pusty1.png");
-
-						//	this->status = Condition::Game3;
-						//}
-						//else
-						//{
-						//	std::cout << "Pudzian nie trafil " << std::endl;
-						//}
 					}
 				}
 				else
-				{
-					std::cout << "Nie trafiles " << std::endl;
+				{				
+					//Enemy turn
+					this->which_ture = "Enemy ture";
 				}
 				this->clock.restart();
 				this->startCountdown = true;
-				//Enemy turn
-				//int j = rand() % 2;
-				//if (j == 1 && this->enemy_has_rock)
-				//{
-				//	std::cout << "Pudzian trafil " << std::endl;
-				//	this->is_collapsed = true;
-				//	this->setBackground("images/pusty1.png");
 
-				//	this->status = Condition::Game3;
-				//}
-				//else if(j == 0 && this->enemy_has_rock)
-				//{
-				//	//Our turn
-				//	std::cout << "Pudzian nie trafil " << std::endl;
-				//	this->status = Condition::Game1;
-				//}
 			}
 
 			else if (this->ev.key.code == sf::Mouse::Right)
 			{
-				this->your_turn = true;
+				this->your_ture = true;
 				this->is_collapsed = false;
 				this->status = Condition::Game1;
+				this->which_ture = "Your ture";
 				this->setBackground("images/Plansza1.png");
-				this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
+				this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png", "n");
 				this->can.setPosition(
 					(this->window->getSize().x) * 0.55f,
 					(this->window->getSize().y) * 0.65f
@@ -280,15 +253,6 @@ void Game::pollEvents()
 		}
 		}
 	}
-}
-
-void Game::enemyTurn()
-{
-	/*if (this->Enemy1->getEnemyTurn() <= this->elapsedTime)
-	{
-		this->your_turn = true;
-		elapsedTime = sf::Time::Zero;
-	}*/
 }
 
 
@@ -314,11 +278,12 @@ void Game::updateCan()
 	}
 	if (this->can.getGlobalBounds().intersects(this->Player1->getSprite2().getGlobalBounds()))
 	{
-		this->your_turn = true;
+		this->your_ture = true;
 		this->is_collapsed = false;
 		this->startCountdown = false;
 		this->setBackground("images/Plansza1.png");
 		this->status = Condition::Game1;
+		this->which_ture = "Your ture";
 		this->clock.restart();
 		this->startCountdown;
 	}
@@ -340,12 +305,6 @@ void Game::update()
 
 		Player1->update(*this->window);
 	}
-
-	//End game
-	//if (this->canEmptiness >= 100)
-	//{
-	//	this->endGame = true;
-	//}
 
 }
 
@@ -426,13 +385,45 @@ void Game::spawnBrick()
 
 	//Spawn brick
 	this->bricks.emplace_back(this->brick);
+	//std::cout << "can type"<<can_type.size()<<std::endl;
+	//std::cout << "bricks "<<bricks.size() << std::endl;
 }
 
 void Game::updateText()
 {
-	std::stringstream ss;
-	ss << "Points: " << this->Player1->getPoints();
-    this->uiText.setString(ss.str());
+	if (this->status != Condition::EndScreen)
+	{
+		std::stringstream ss;
+		ss << "Points: " << this->Player1->getPoints() << std::endl
+			<< "Player beer amount " << this->Player1->getCanEmptiness() << std::endl
+			<< "Enemy beer amount " << this->Enemy1->getCanEmptiness() << std::endl << std::endl
+			<< this->which_ture;
+		this->uiText.setString(ss.str());
+	}
+	else if(this->Player1->getCanEmptiness() < this->Enemy1->getCanEmptiness())
+	{
+		std::stringstream ss;
+		ss << "Tanio skory nie sprzedam!";
+		this->uiText.setPosition(
+			this->window->getSize().x * 0.55,
+			this->window->getSize().y * 0.6
+		);
+		this->uiText.setScale(2.f, 2.f);
+		this->uiText.setColor(sf::Color::White);
+		this->uiText.setString(ss.str());
+	}
+	else if (this->Player1->getCanEmptiness() > this->Enemy1->getCanEmptiness())
+	{
+		std::stringstream ss;
+		ss << "POLSKA GUROOM!";
+		this->uiText.setPosition(
+			this->window->getSize().x * 0.55,
+			this->window->getSize().y * 0.6
+		);
+		this->uiText.setScale(2.f, 2.f);
+		this->uiText.setColor(sf::Color::White);
+		this->uiText.setString(ss.str());
+	}
 }
 
 void Game::renderText(sf::RenderTarget& target)
@@ -585,10 +576,7 @@ void Game::updateBricks()
 		{
 			this->bricks.erase(this->bricks.begin() + i);
 			this->can_type.erase(this->can_type.begin() + i);
-			this->Player1->setDrinkingSpeed(-1);
 		}
-
-
 	}
 
 	//Check if clicked
@@ -604,17 +592,19 @@ void Game::updateBricks()
 			{
 				if (this->bricks[i].getGlobalBounds().contains(this->mousePosView))
 				{
-					//this->Player1.setPoints();
 					if (this->can_type[i] == canType::Beczkowe || this->can_type[i] == canType::Harnas || this->can_type[i] == canType::Kustosz)
 					{
 						this->Player1->setPoints(10);
-						this->Player1->setDrinkingSpeed(1);
+						this->Player1->setDrinkingSpeed(0.01);
 						std::cout << this->Player1->getPoints();
 					}
 					else
 					{
 						this->Player1->setPoints(-10);
-						this->Player1->setDrinkingSpeed(-1);
+						if (this->Player1->getDrinkingSpeed() > 0)
+						{
+							this->Player1->setDrinkingSpeed(-0.1);
+						}
 						std::cout << this->Player1->getPoints();
 					}
 
@@ -642,16 +632,22 @@ void Game::updateElapsedTime()
 	}
 	if (this->elapsedTime >= this->Enemy1->getMovementSpeed_x())
 	{
-		//this->your_turn = true;
 		this->is_collapsed = false;
-		this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png");
+		this->Enemy1->setSprite(*this->window, "images/Pudzian_przeciwnik.png", "n");
 		this->clock.restart();
 		this->status = Condition::Game1;
+		this->which_ture = "Enemy ture";
 	}
 }
 
 void Game::update2()
 {
+	if (this->Player1->getCanEmptiness() <= 0)
+	{
+		this->status = Condition::EndScreen;
+		this->Enemy1->setSprite(*this->window, "images/Pudzian_gratulacje.png", "y1");
+	}
+
 	this->pollEvents();
 
 	if (this->getEndGame() == false)
@@ -665,6 +661,8 @@ void Game::update2()
 		this->updateBricks();
 
 		this->updateCan();
+
+		this->Player1->setCanEmptiness(0.1f);
 	}
 }
 
@@ -698,54 +696,61 @@ void Game::updateEnemyTurn()
 	}
 	if (this->elapsedTime >= 3 && this->startCountdown && this->status == Condition::Game1)
 	{
-		this->your_turn = false;
+		this->your_ture = false;
 		this->is_collapsed = false;
 		this->startCountdown = false;
 		this->enemy_has_rock = true;
-		std::cout << "Pudzian podniosl kamien " << std::endl;
 	}
 	else if (this->enemy_has_rock)
 	{
+		//Enemy turn
 		int j = rand() % 2;
 		if (j == 1)
 		{
-			std::cout << "Pudzian trafil " << std::endl;
 			this->is_collapsed = true;
 			this->setBackground("images/Tlo.png");
 			this->enemy_has_rock = false;
 
 			this->can.setPosition(
-				static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->brick.getGlobalBounds().width)),
-				static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->brick.getGlobalBounds().height))
+				static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->can.getGlobalBounds().width) * 0.9f),
+				static_cast<float>(rand() % static_cast<int>(this->window->getSize().y - this->can.getGlobalBounds().width) * 0.9f)
 			);
 
-			this->Player1->setSprite2(*this->window, "images/player.png");
+			this->Player1->setSprite2(*this->window, "images/spejson.png");
 
 			this->status = Condition::Game3;
 		}
 		else if (j == 0)
 		{
-			//Our turn
-			std::cout << "Pudzian nie trafil " << std::endl;
+			//Our ture
+			this->which_ture = "Your ture";
 			this->enemy_has_rock = false;
-			this->your_turn = true;
+			this->your_ture = true;
 		}
 	}
 }
 
 void Game::update3()
 {
+	if (this->Enemy1->getCanEmptiness() <= 0)
+	{
+		this->status = Condition::EndScreen;
+		this->Enemy1->setSprite(*this->window, "images/pudzian_wysmiewa.png", "y2");
+	}
+
 	this->pollEvents();
 
 	if (this->getEndGame() == false)
 	{
 		this->updateEnemyTurn();
 
-		this->updateText();
-
 		this->updateCan();
 
-		Player1->update2(*this->window);
+		this->updateText();
+
+		this->Player1->update2(*this->window);
+
+		this->Enemy1->setCanEmptiness(0.2f);
 	}
 }
 
@@ -757,13 +762,40 @@ void Game::render3()
 
 	this->renderCan(*this->window);
 
-	Player1->render2(*this->window);
+	this->Player1->render2(*this->window);
 
 	this->renderText(*this->window);
 
 	this->window->display();
 }
 
+////////////////EndScreen////////////////
+void Game::update4()
+{
+	this->pollEvents();
+
+	if (this->getEndGame() == false)
+	{
+		this->updateEnemyTurn();
+
+		this->updateCan();
+
+		this->updateText();
+	}
+}
+
+void Game::render4()
+{
+	this->window->clear(sf::Color::Black);
+
+	this->renderBackground(*this->window);
+
+	this->renderText(*this->window);
+
+	this->Enemy1->render(*this->window);
+
+	this->window->display();
+}
 
 
 
@@ -797,19 +829,27 @@ void Game::start(Game _game)
 
 			_game.render3();
 		}
+		if (this->getCondition() == Condition::EndScreen)
+		{
+			_game.update4();
 
+
+			_game.render4();
+		}
 		this->status = _game.getCondition();
-
 	}
+
+	this->window->close();
 }
 
 
 
 //TODO
-//zliczanie punktów
-//ile picia zostało
-//zwiększanie jak szybko pijemy
-//druga minigra: zrobić metodę "setCanPosition", która się przyda w Game3 i na początku Game1 (bo póki co puszka zostaje randomowa)
+/*
+Ekran końcowy:
+Wyświetlanie Pudziana
+
+*/
 
 //Dlaczego wywala b³¹d przy delete Player i okna
 //Dlaczego ci¹gle dzia³a if z Gra1 w metodzie start

@@ -1,4 +1,15 @@
 ﻿  Game.cpp
-C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(773,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(409,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(408,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(421,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(420,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(412,15): warning C4996: 'sf::Text::setColor': was declared deprecated
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(424,15): warning C4996: 'sf::Text::setColor': was declared deprecated
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(598,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(606,44): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\Game.cpp(805,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  MyForm1.cpp
+C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\Flanki01\MyForm1.cpp(10,15): warning C4551: function call missing argument list
+  Generating Code...
   Contestant.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Flanki01.vcxproj -> C:\Wszystko nowe\Visual Studio\Semestr II\Flanki01\x64\Release\Flanki01.exe

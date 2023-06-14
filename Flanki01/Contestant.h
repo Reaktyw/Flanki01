@@ -15,7 +15,7 @@ using namespace System::Data;
 using namespace System::Drawing;
 
 enum class Condition {
-	Game1, Game2, Game3
+	Game1, Game2, Game3, EndScreen
 };
 
 enum class SpriteType {
@@ -50,11 +50,11 @@ public:
 	Contestant() {};
 	virtual ~Contestant() {};
 
-	virtual void setDrinkingSpeed(float _d) = 0;
+	void setDrinkingSpeed(float _d);
 	float getDrinkingSpeed();
 	void setPoints(float _p);
 	float getPoints();
-	virtual void setSprite(sf::RenderTarget& window, std::string _s) = 0;
+	virtual void setSprite(sf::RenderTarget& window, std::string _s, std::string end) = 0;
 	virtual void setSprite2(sf::RenderTarget& window, std::string _s) = 0;
 	void setTexture(std::string _s);
 	void setTexture2(std::string _s);
@@ -63,7 +63,8 @@ public:
 	float getMovementSpeed_x();
 	float getMovementSpeed_y();
 
-	void setCanEmptiness(float _elapsed);
+	virtual void setCanEmptiness(float _elapsed) = 0;
+	float getCanEmptiness();
 
 	virtual void update(sf::RenderTarget& window) = 0;
 	virtual void update2(sf::RenderTarget& window) = 0;
@@ -84,10 +85,9 @@ public:
 	Enemy(sf::RenderTarget& window);
 	~Enemy();
 
-	void setDrinkingSpeed(float _d) {};
-
-	void setSprite(sf::RenderTarget& window, std::string _s);
+	void setSprite(sf::RenderTarget& window, std::string _s, std::string end);
 	void setSprite2(sf::RenderTarget& window, std::string _s);
+	void setCanEmptiness(float _elapsed);
 
 	void update(sf::RenderTarget& window);
 	void update2(sf::RenderTarget& window);
@@ -107,12 +107,11 @@ public:
 	Player(sf::RenderTarget& window);
 	~Player();
 
-	void setSprite(sf::RenderTarget& window, std::string _s);
+	void setSprite(sf::RenderTarget& window, std::string _s, std::string end);
 	void setSprite2(sf::RenderTarget& window, std::string _s);
+	void setCanEmptiness(float _elapsed);
 	void updateWindowBoundsCollision(sf::RenderTarget& window, std::string _s);
 	void updateMovement(sf::RenderTarget& window);
-
-	void setDrinkingSpeed(float _d);
 
 	void update(sf::RenderTarget& window);
 	void update2(sf::RenderTarget& window);
